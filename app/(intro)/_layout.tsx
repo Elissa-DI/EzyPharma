@@ -5,6 +5,8 @@ import AppIntroSlider from 'react-native-app-intro-slider';
 import Dimension from '@/constants/Dimension';
 import Colors from '@/constants/Colors';
 
+import { styles } from '@/constants/styles/intro';
+
 const slides = [
   {
     id: 1,
@@ -46,8 +48,6 @@ const Layout = () => {
   };
 
   const handleContinue = () => {
-    // Navigate to another page based on the selected option
-    // For demonstration, I'm just logging the selected option
     console.log("Selected option:", selectedOption);
   };
 
@@ -58,39 +58,19 @@ const Layout = () => {
         renderItem={({ item }) => {
           return (
             <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                padding: 15,
-                paddingTop: 100,
-              }}
+              style={styles.introView}
             >
               <Image
                 source={item.image}
-                style={{
-                  width: Dimension.width - 80,
-                  height: 450
-                }}
-                resizeMode='contain'
+                style={styles.introImg}
               />
               <Text
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: Dimension.h1,
-                  paddingTop: 10,
-                  paddingLeft: 15,
-                  paddingRight: 15
-                }}
+                style={styles.title}
               >
                 {item.title}
               </Text>
               <Text
-                style={{
-                  fontSize: Dimension.h5,
-                  paddingTop: 5,
-                  paddingLeft: 15,
-                  paddingRight: 15
-                }}
+                style={styles.subtitle}
               >
                 {item.subtitle}
               </Text>
@@ -114,20 +94,11 @@ const Layout = () => {
 
   return (
     <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        padding: 15,
-        paddingTop: 50,
-      }}
+      style={styles.doneView}
     >
       <Image
         source={require('@/assets/images/intro4.png')}
-        style={{
-          width: Dimension.width - 80,
-          height: 300
-        }}
-        resizeMode='contain'
+        style={styles.doneImg}
       />
       <Text>Tailor your experience</Text>
       <Text>To provide with good experience, please select your role below:</Text>
