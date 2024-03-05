@@ -6,6 +6,7 @@ import Dimension from '@/constants/Dimension';
 import Colors from '@/constants/Colors';
 
 import { styles } from '@/constants/styles/intro';
+import { router } from 'expo-router';
 
 const slides = [
   {
@@ -49,6 +50,7 @@ const Layout = () => {
 
   const handleContinue = () => {
     console.log("Selected option:", selectedOption);
+    router.navigate('/patient')
   };
 
   if (!show) {
@@ -85,7 +87,7 @@ const Layout = () => {
         renderNextButton={() => buttonLablel("Next")}
         renderSkipButton={() => buttonLablel("Skip")}
         renderDoneButton={
-          () => buttonLablel("Done")
+          () => buttonLablel("Next")
         }
         onDone={handleDone}
       />
@@ -113,7 +115,7 @@ const Layout = () => {
           <View style={{ width: 20, height: 20, borderRadius: 10, borderWidth: 1, borderColor: selectedOption === 'hospital' ? 'blue' : 'gray', justifyContent: 'center', alignItems: 'center', marginRight: 10 }}>
             {selectedOption === 'hospital' && <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: 'blue' }} />}
           </View>
-          <Text>Hospital</Text>
+          <Text>Referal Hospital</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleOptionSelect('pharmacy')} style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
           <View style={{ width: 20, height: 20, borderRadius: 10, borderWidth: 1, borderColor: selectedOption === 'pharmacy' ? 'blue' : 'gray', justifyContent: 'center', alignItems: 'center', marginRight: 10 }}>

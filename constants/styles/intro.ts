@@ -37,7 +37,5 @@ export const styles = StyleSheet.create({
         paddingTop: 5,
         paddingLeft: 15,
         paddingRight: 15
-    }
-
-
+    },
 })
