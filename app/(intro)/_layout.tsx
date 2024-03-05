@@ -7,6 +7,7 @@ import Colors from '@/constants/Colors';
 
 import { styles } from '@/constants/styles/intro';
 import { router } from 'expo-router';
+import React from 'react';
 
 const slides = [
   {

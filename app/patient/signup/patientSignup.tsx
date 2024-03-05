@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const PatientLayout = () => {
+const PatientSignup = () => {
   return (
     <View>
-      <Text>PatientLayout</Text>
+      <Text>PatientSignup</Text>
     </View>
   )
 }
 
-export default PatientLayout
+export default PatientSignup
