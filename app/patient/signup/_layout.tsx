@@ -140,7 +140,7 @@ const PatientSignup = () => {
                     value={terms}
                     onValueChange={setTerms}
                     color={terms ? "blue" : "gray"}
-                    style={{ width: 25, height: 25, borderRadius: 6 }}
+                    style={{ width: 25, height: 25, borderRadius: 20 }}
                 />
                 <Text style={{ fontSize: 15 }}>
                     I agree to the healthcare{" "}
