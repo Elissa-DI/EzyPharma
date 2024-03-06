@@ -15,8 +15,12 @@ export const patient = StyleSheet.create({
     backButton: {
         paddingRight: 10,
     },
+    centerDiv: {
+        alignItems: 'center',
+        marginVertical: 5
+    },
     buttonText: {
-        color: 'white',
+        color: 'blue',
         textAlign: 'center',
     },
     logoImg: {
@@ -24,9 +28,23 @@ export const patient = StyleSheet.create({
         height: 250,
         resizeMode: 'contain'
     },
+    name: {
+        fontWeight: 'bold',
+        fontSize: 30,
+        color: '#223A6A'
+    },
+    title: {
+        fontWeight: 'bold',
+        fontSize: 28,
+    },
+    subtitle: {
+        color: '#221F1F'
+    },
     onBoardButton: {
+        justifyContent: 'center',
         marginVertical: 5,
-        width: Dimension.width - 100,
+        width: Dimension.width - 110,
+        height: 50,
         borderWidth: 1,
         borderColor: 'blue',
         borderRadius: 200,

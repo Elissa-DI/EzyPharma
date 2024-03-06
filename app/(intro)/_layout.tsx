@@ -51,7 +51,15 @@ const Layout = () => {
 
   const handleContinue = () => {
     console.log("Selected option:", selectedOption);
-    router.navigate('/patient')
+    if (selectedOption === 'patient') {
+      router.navigate('/patient')
+    } else if (selectedOption === 'pharmacy') {
+      router.navigate('/pharmacy')
+    } else if (selectedOption === 'hospital') {
+      router.navigate('/hospital')
+    } else {
+      router.navigate('/error')
+    }
   };
 
   if (!show) {
