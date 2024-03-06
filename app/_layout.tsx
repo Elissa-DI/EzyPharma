@@ -49,6 +49,7 @@ function RootLayoutNav() {
   return (
     <Stack>
       <Stack.Screen name="(intro)" options={{ headerShown: false }} />
+      <Stack.Screen name="patient" options={{ headerShown: false }} />
     </Stack>
   );
 }

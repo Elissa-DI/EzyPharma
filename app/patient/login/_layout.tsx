@@ -10,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
 import React, { useState } from "react";
 import Checkbox from "expo-checkbox";
+import { router } from "expo-router";
 
 const PatientLogin = () => {
   const nav = useNavigation();
@@ -18,6 +19,11 @@ const PatientLogin = () => {
   const [phone, setPhone] = useState<string>('');
   const [phoneOrEmail, setPhoneOrEmail] = useState("email");
   const [isShowm, setIsShowm] = useState(false);
+
+  //Functions
+  const handleForgot = () => {
+    router.navigate('/patient/forgot')
+  }
   return (
     <SafeAreaView style={{ height: "100%" }}>
       <View style={styles.title}>
@@ -122,7 +128,11 @@ const PatientLogin = () => {
         </View>
       </View>
       <View style={styles.forgot}>
-        <Text>Forgot password?</Text>
+        <TouchableOpacity
+          onPress={handleForgot}
+        >
+          <Text>Forgot password?</Text>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.sign}>
         <Text style={{ color: "white", fontSize: 20 }}>Sign In</Text>
@@ -134,14 +144,19 @@ const PatientLogin = () => {
         </Text>
       </View>
       <View style={styles.orContainer}>
-        <Text>OR</Text>
-        <View style={styles.orBtn}>
+        <Text className=" font-extrabold">OR</Text>
+        <TouchableOpacity style={styles.orBtn}>
           <Ionicons name="logo-google" size={24} color={"gray"} />
           <View>
-            <Text style={styles.orText}>Sign in with Google</Text>
+            <Text style={styles.orText} className="font-bold text-2xl text-orange-600">Sign in with Google</Text>
           </View>
-        </View>
-
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.orBtn}>
+          <Ionicons name="logo-facebook" size={24} color={"gray"} />
+          <View>
+            <Text style={styles.orText} className="font-bold text-2xl text-orange-600">Sign in with Facebook</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   )
@@ -272,7 +287,7 @@ const styles = StyleSheet.create({
   orContainer: {
     width: '100%',
     position: 'absolute',
-    bottom: 60,
+    bottom: 10,
     alignItems: 'center'
   },
   orBtn: {
@@ -286,7 +301,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: 15,
+    gap: 50,
     borderRadius: 6,
   },
   orText: {
