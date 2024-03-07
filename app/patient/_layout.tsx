@@ -11,6 +11,7 @@ const PatientLayout = () => {
             <Stack.Screen name="login" options={{ headerShown: false }} />
             <Stack.Screen name="signup" options={{ headerShown: false }} />
             <Stack.Screen name="forgot" options={{ headerShown: false }} />
+            <Stack.Screen name="home" options={{ headerShown: false }} />
         </Stack>
     );
 }

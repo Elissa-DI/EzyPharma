@@ -10,6 +10,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
 import React, { useState } from "react";
 import Checkbox from "expo-checkbox";
+import { Link, router } from "expo-router";
+import tw from "twrnc";
+import Modal from "react-native-modal";
 
 
 const PatientSignup = () => {
@@ -22,6 +25,39 @@ const PatientSignup = () => {
     const [phoneOrEmail, setPhoneOrEmail] = useState("email");
     const [isShowm, setIsShowm] = useState(false);
     const [terms, setTerms] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const handleSignup = () => {
+        setIsModalVisible(true)
+    }
+
+    const LocationModal = () => (
+        <View style={tw`items-center bg-white p-5 rounded-lg`}>
+            <View style={tw`w-full items-end`}>
+                <TouchableOpacity
+                    onPress={() => {setIsModalVisible(false)}}
+                >
+                    <FontAwesome name="times-circle-o" size={20} color='gray' />
+                </TouchableOpacity>
+            </View>
+            <View style={tw`bg-blue-100 p-6 rounded-full my-3`}>
+                <Ionicons name="locate" color='blue' size={25} />
+            </View>
+            <View style={tw`items-center`}>
+                <Text style={tw`font-bold text-xl mb-3`}>Allow location</Text>
+                <Text>Grant location access for enhanced features.</Text>
+                <TouchableOpacity
+                    style={tw`w-5/7 mt-5 items-center bg-blue-600 py-3 rounded-full`}
+                    onPress={() => {
+                        console.log("Location enabled");
+
+                    }}
+                >
+                    <Text style={tw`text-white font-semibold`}>Allow location</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
     return (
         <SafeAreaView style={{ height: "100%" }}>
             <View style={styles.title}>
@@ -148,7 +184,10 @@ const PatientSignup = () => {
                     <Text style={styles.link}>Privacy policy</Text>
                 </Text>
             </View>
-            <TouchableOpacity style={styles.sign}>
+            <TouchableOpacity
+                style={styles.sign}
+                onPress={handleSignup}
+            >
                 <Text style={{ color: "white", fontSize: 20 }}>Sign Up</Text>
             </TouchableOpacity>
             <View style={styles.already}>
@@ -157,6 +196,9 @@ const PatientSignup = () => {
                     <Text style={{ color: "blue" }}>Sign in</Text>
                 </Text>
             </View>
+            <Modal isVisible={isModalVisible}>
+                {LocationModal()}
+            </Modal>
         </SafeAreaView>
     )
 }
