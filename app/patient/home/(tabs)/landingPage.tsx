@@ -9,7 +9,26 @@ import article1 from '@/assets/images/article1.png';
 const landingPage = () => {
     const name = 'Ruchita';
     const [searchQuery, setSearchQuery] = useState<string>('')
+    const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
     const articles = [
+        {
+            photo: article1,
+            title: 'The 25 Healthiest diet You Can Eat, According to drugs you are taking',
+            postedDate: 'Jul 10, 2023',
+            timeRead: 5
+        },
+        {
+            photo: article1,
+            title: 'The 25 Healthiest diet You Can Eat, According to drugs you are taking',
+            postedDate: 'Jul 10, 2023',
+            timeRead: 5
+        },
+        {
+            photo: article1,
+            title: 'The 25 Healthiest diet You Can Eat, According to drugs you are taking',
+            postedDate: 'Jul 10, 2023',
+            timeRead: 5
+        },
         {
             photo: article1,
             title: 'The 25 Healthiest diet You Can Eat, According to drugs you are taking',
@@ -17,6 +36,9 @@ const landingPage = () => {
             timeRead: 5
         }
     ]
+    const handleBookmarks = () => {
+
+    }
     return (
         <View>
             <View style={tw`flex-row pt-12 bg-[#D5ECF4]`}>
@@ -88,18 +110,29 @@ const landingPage = () => {
                                     <View>
                                         <Image
                                             source={article.photo}
+                                            style={tw`h-[90%]`}
                                         />
                                     </View>
                                     <View style={tw`gap-1`}>
-                                        <View style={tw`flex-row w-[70%] justify-between bg-red-500`}>
+                                        <View style={tw`flex-row w-[63%] justify-between p-1`}>
                                             <View style={tw`w-4/5`}>
-                                                <Text style={tw``}>{article.title}</Text>
+                                                <Text style={tw`font-bold`}>{article.title}</Text>
                                             </View>
-                                            <FontAwesome name='bookmark-o' />
+                                            <View style={tw``}>
+                                                <TouchableOpacity
+                                                    onPress={handleBookmarks}
+                                                >
+                                                    <FontAwesome
+                                                        name={isBookmarked ? 'bookmark' : 'bookmark-o'}
+                                                        size={18}
+                                                        color='blue'
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
                                         </View>
-                                        <View>
-                                            <Text>{article.postedDate}</Text>
-                                            <Text>{article.timeRead}min read</Text>
+                                        <View style={tw`flex-row gap-4`}>
+                                            <Text style={tw`text-gray-500`}>{article.postedDate}</Text>
+                                            <Text style={tw`text-gray-500`}>{article.timeRead}min read</Text>
                                         </View>
                                     </View>
                                 </View>
