@@ -1,10 +1,12 @@
-import { ScrollView, View, Text, Image, TextInput, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Text, Image, TextInput, TouchableOpacity, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import tw from 'twrnc'
 import { Feather, FontAwesome } from '@expo/vector-icons';
 
 //Images
 import article1 from '@/assets/images/article1.png';
+import { router } from 'expo-router';
+const { height } = Dimensions.get('window');
 
 const landingPage = () => {
     const name = 'Ruchita';
@@ -12,24 +14,29 @@ const landingPage = () => {
     const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
     const articles = [
         {
+
+            id: 1,
+            photo: article1,
+            title: 'The 25 Healthiest diet You Can Eat, According to drugs you are taking',
+            postedDate: 'Jul 10, 2023',
+            timeRead: 6
+        },
+        {
+            id: 2,
+            photo: article1,
+            title: 'The 25 Healthiest diet You Can Eat, According to drugs you are taking',
+            postedDate: 'Jul 10, 2023',
+            timeRead: 3
+        },
+        {
+            id: 3,
             photo: article1,
             title: 'The 25 Healthiest diet You Can Eat, According to drugs you are taking',
             postedDate: 'Jul 10, 2023',
             timeRead: 5
         },
         {
-            photo: article1,
-            title: 'The 25 Healthiest diet You Can Eat, According to drugs you are taking',
-            postedDate: 'Jul 10, 2023',
-            timeRead: 5
-        },
-        {
-            photo: article1,
-            title: 'The 25 Healthiest diet You Can Eat, According to drugs you are taking',
-            postedDate: 'Jul 10, 2023',
-            timeRead: 5
-        },
-        {
+            id: 4,
             photo: article1,
             title: 'The 25 Healthiest diet You Can Eat, According to drugs you are taking',
             postedDate: 'Jul 10, 2023',
@@ -37,7 +44,11 @@ const landingPage = () => {
         }
     ]
     const handleBookmarks = () => {
+        setIsBookmarked(!isBookmarked)
+    }
 
+    const handleRedirectPharmacy = () => {
+        router.navigate('/patient/home/searchPharmacy')
     }
     return (
         <View>
@@ -62,7 +73,7 @@ const landingPage = () => {
                 </View>
             </View>
             <View style={tw`w-full rounded-full items-center `}>
-                <ScrollView style={tw`w-full`}>
+                <ScrollView style={tw`w-full`} contentContainerStyle={{ flexGrow: 1 }}>
                     <View style={tw`items-center my-8 gap-7`}>
                         <View style={tw`w-4/5 flex-row items-center border border-gray-300 rounded-full p-2`}>
                             <Feather name="search" size={24} color="gray" style={tw`mr-2`} />
@@ -84,10 +95,13 @@ const landingPage = () => {
                                 <TouchableOpacity style={tw`h-10 w-10 bg-blue-600 rounded-full items-center justify-center`}>
                                     <FontAwesome name='stethoscope' size={22} color='white' />
                                 </TouchableOpacity>
-                                <Text style={tw`font-semibold`}>Referral <br /> hospitals</Text>
+                                <Text style={tw`font-semibold`}>Referral hospitals</Text>
                             </View>
                             <View style={tw`items-center`}>
-                                <TouchableOpacity style={tw`h-10 w-10 bg-blue-600 rounded-full items-center justify-center`}>
+                                <TouchableOpacity
+                                    style={tw`h-10 w-10 bg-blue-600 rounded-full items-center justify-center`}
+                                    onPress={handleRedirectPharmacy}
+                                >
                                     <FontAwesome name='stethoscope' size={22} color='white' />
                                 </TouchableOpacity>
                                 <Text style={tw`font-semibold`}>Pharmacy</Text>
@@ -101,7 +115,7 @@ const landingPage = () => {
                                 <Text style={tw`text-blue-600`}>See all</Text>
                             </TouchableOpacity>
                         </View>
-                        <View>
+                        <View style={tw`gap-3`}>
                             {articles.map((article, i) => (
                                 <View
                                     key={i}
