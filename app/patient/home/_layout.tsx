@@ -1,6 +1,7 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { Stack } from 'expo-router'
+import { Stack, router } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
 
 const HomeLayout = () => {
     return (

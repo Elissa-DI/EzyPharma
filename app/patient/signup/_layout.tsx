@@ -30,12 +30,14 @@ const PatientSignup = () => {
     const handleSignup = () => {
         setIsModalVisible(true)
     }
-
+    const handleLogin = () => {
+        router.navigate('/patient/login')
+      }
     const LocationModal = () => (
         <View style={tw`items-center bg-white p-5 rounded-lg`}>
             <View style={tw`w-full items-end`}>
                 <TouchableOpacity
-                    onPress={() => {setIsModalVisible(false)}}
+                    onPress={() => { setIsModalVisible(false) }}
                 >
                     <FontAwesome name="times-circle-o" size={20} color='gray' />
                 </TouchableOpacity>
@@ -45,12 +47,12 @@ const PatientSignup = () => {
             </View>
             <View style={tw`items-center`}>
                 <Text style={tw`font-bold text-xl mb-3`}>Allow location</Text>
-                <Text>Grant location access for enhanced features.</Text>
+                <Text style={tw`text-gray-400`}>Grant location access for enhanced features.</Text>
                 <TouchableOpacity
-                    style={tw`w-5/7 mt-5 items-center bg-blue-600 py-3 rounded-full`}
+                    style={tw`w-5/7 mt-5 items-center bg-blue-600 py-3 px-5 rounded-full`}
                     onPress={() => {
+                        router.navigate('/patient/login')
                         console.log("Location enabled");
-
                     }}
                 >
                     <Text style={tw`text-white font-semibold`}>Allow location</Text>
@@ -171,14 +173,14 @@ const PatientSignup = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={styles.terms}>
+            <View style={[styles.terms, tw``]}>
                 <Checkbox
                     value={terms}
                     onValueChange={setTerms}
                     color={terms ? "blue" : "gray"}
                     style={{ width: 25, height: 25, borderRadius: 20 }}
                 />
-                <Text style={{ fontSize: 15 }}>
+                <Text style={[{ fontSize: 13 }, tw`pr-5`]}>
                     I agree to the healthcare{" "}
                     <Text style={styles.link}>Terms of services</Text> and{" "}
                     <Text style={styles.link}>Privacy policy</Text>
@@ -188,12 +190,14 @@ const PatientSignup = () => {
                 style={styles.sign}
                 onPress={handleSignup}
             >
-                <Text style={{ color: "white", fontSize: 20 }}>Sign Up</Text>
+                <Text style={{ color: "white", fontSize: 18 }}>Sign Up</Text>
             </TouchableOpacity>
             <View style={styles.already}>
                 <Text style={{ fontSize: 17 }}>
                     Already have an account?{" "}
-                    <Text style={{ color: "blue" }}>Sign in</Text>
+                    <TouchableOpacity onPress={handleLogin}>
+                        <Text style={{ color: "blue" }}>Login</Text>
+                    </TouchableOpacity>
                 </Text>
             </View>
             <Modal isVisible={isModalVisible}>
@@ -297,28 +301,26 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         display: "flex",
         flexDirection: "row",
-        gap: 14,
+        gap: 15,
     },
     link: {
         color: "blue",
     },
     sign: {
-        position: "absolute",
-        bottom: 30,
+        marginTop: 110,
         alignSelf: "center",
         width: "80%",
         backgroundColor: "#0c97fa",
         justifyContent: "center",
         alignItems: "center",
-        height: 60,
+        height: 55,
         borderRadius: 50,
     },
     already: {
         width: "100%",
         alignSelf: "center",
         alignItems: "center",
-        position: "absolute",
-        bottom: 10,
+        marginTop: 10
     },
 });
 

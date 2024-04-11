@@ -14,27 +14,29 @@ const ForgotPassword = () => {
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      router.push("/patient/forgot/reset")
+      router.navigate("/patient/forgot/reset")
     }, 1500)
   }
   return (
     <View>
-      <View style={tw`py-4 px-8`}>
+      <View style={tw`mt-12 py-1 px-8`}>
         <Link href='../'>
           <FontAwesome name="chevron-left" size={18} />
         </Link>
       </View>
       <View style={tw`flex items-center mt-5`}>
         <Image
-          source={require('@/assets/icons/forgot.svg')}
+          source={require('@/assets/images/forgot.png')}
         />
       </View>
       <View style={tw`flex items-center mt-10 px-10`}>
-        <Text style={tw`font-bold text-xl`}>Forgot Your password?</Text>
-        <Text style={tw`px-10`}>
-          Enter your email or your phone number,
-          we will send you confirmation code
-        </Text>
+        <View style={tw``}>
+          <Text style={tw`font-bold text-xl`}>Forgot Your password?</Text>
+          <Text>
+            Enter your email or your phone number,
+            we will send you confirmation code
+          </Text>
+        </View>
       </View>
       <View style={tw`mt-5 mb-5 items-center`}>
         <View style={tw`h-16 bg-gray-200 border border-gray-500 border-opacity-25 mb-6 w-4/5 flex flex-row items-center rounded-xl"`}>

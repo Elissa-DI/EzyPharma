@@ -14,8 +14,8 @@ const CodeVerificationLayout = () => {
     console.log("Resent the code please!")
   }
   return (
-    <View style={tw`px-8`}>
-      <View style={tw`my-5 py-4 px-2`}>
+    <View style={tw`px-7`}>
+      <View style={tw`mt-14 mb-5 px-1`}>
         <Link href='../'>
           <FontAwesome name="chevron-left" size={18} />
         </Link>
@@ -24,14 +24,14 @@ const CodeVerificationLayout = () => {
         <Text style={tw`font-bold text-2xl mb-3`}>Enter Verification Code</Text>
         {verificationMethod === 'phone' ?
           (
-            <Text>Enter code that we have sent to your number 08528188*** </Text>
+            <Text style={tw`text-gray-400`}>Enter code that we have sent to your number 08528188*** </Text>
           ) :
           (
-            <Text>Enter code that we have sent to your email davinecyuzu***</Text>
+            <Text style={tw`text-gray-400`}>Enter code that we have sent to your email davinecyuzu***</Text>
           )
         }
       </View>
-      <View style={tw`my-14 px-2 flex flex-row gap-10`}>
+      <View style={tw`my-14 px-2 flex flex-row gap-5`}>
         <TextInput
           style={tw`border border-blue-600 rounded-xl w-14 h-14 px-2 py-2 mb-2`}
         />
@@ -46,7 +46,7 @@ const CodeVerificationLayout = () => {
         />
       </View>
       <View style={tw`items-center`}>
-        <TouchableOpacity style={tw`w-4/5 items-center bg-blue-600 py-6 rounded-full`} onPress={handleVerify}>
+        <TouchableOpacity style={tw`w-full items-center bg-blue-600 py-5 rounded-full`} onPress={handleVerify}>
           <Text style={tw`text-white font-semibold`}>Verify</Text>
         </TouchableOpacity>
         <View style={tw`flex-row my-5`}>

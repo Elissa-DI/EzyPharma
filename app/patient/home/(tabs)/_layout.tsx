@@ -19,7 +19,7 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="searchPharmacy"
         options={{
-          tabBarLabel: 'Search',
+          tabBarLabel: 'Pharmacy',
           tabBarIcon: ({ color, size }) => <Ionicons name="search" color={color} size={size} />,
           headerShown: false,
         }}
@@ -27,15 +27,15 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="notificationPage"
         options={{
-          tabBarLabel: 'Trips',
+          tabBarLabel: 'Notifications',
           tabBarIcon: ({ color, size }) => <FontAwesome5 name="bell" color={color} size={size} />,
           headerShown: false,
         }}
       />
       <Tabs.Screen
-        name="profilePage"
+        name="profile"
         options={{
-          tabBarLabel: 'Inbox',
+          tabBarLabel: 'Profile',
           tabBarIcon: ({ color, size }) => <Ionicons name="person-outline" color={color} size={size} />,
           headerShown: false,
         }}

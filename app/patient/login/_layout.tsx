@@ -11,6 +11,7 @@ import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
 import React, { useState } from "react";
 import Checkbox from "expo-checkbox";
 import { router } from "expo-router";
+import tw from 'twrnc'
 
 const PatientLogin = () => {
   const nav = useNavigation();
@@ -24,13 +25,16 @@ const PatientLogin = () => {
   const handleForgot = () => {
     router.navigate('/patient/forgot')
   }
+  const redirectSignUp = () => {
+    router.navigate('/patient/signup')
+  }
   return (
     <SafeAreaView style={{ height: "100%" }}>
       <View style={styles.title}>
         <TouchableOpacity>
           <FontAwesome name="chevron-left" />
         </TouchableOpacity>
-        <Text style={styles.pageTitle}>Sign In</Text>
+        <Text style={styles.pageTitle}>Login</Text>
       </View>
       <View style={styles.formContainer}>
         <View style={styles.inputCheckbox}>
@@ -131,30 +135,30 @@ const PatientLogin = () => {
         <TouchableOpacity
           onPress={handleForgot}
         >
-          <Text>Forgot password?</Text>
+          <Text style={{ color: "blue" }}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.sign}>
-        <Text style={{ color: "white", fontSize: 20 }}>Sign In</Text>
+        <Text style={{ color: "white", fontSize: 18 }}>Login</Text>
       </TouchableOpacity>
       <View style={styles.already}>
-        <Text style={{ fontSize: 17 }}>
+        <Text style={{ fontSize: 16 }}>
           Don't have an account?{" "}
-          <Text style={{ color: "blue" }}>Sign up</Text>
+          <TouchableOpacity
+            onPress={redirectSignUp}
+          >
+            <Text style={[{ color: "blue" }, tw`mt-3`]} >Sign up</Text>
+          </TouchableOpacity>
         </Text>
       </View>
       <View style={styles.orContainer}>
-        <Text className=" font-extrabold">OR</Text>
+        <View style={tw`my-10`}>
+          <Text className=" font-extrabold">OR</Text>
+        </View>
         <TouchableOpacity style={styles.orBtn}>
           <Ionicons name="logo-google" size={24} color={"gray"} />
           <View>
-            <Text style={styles.orText} className="font-bold text-2xl text-orange-600">Sign in with Google</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.orBtn}>
-          <Ionicons name="logo-facebook" size={24} color={"gray"} />
-          <View>
-            <Text style={styles.orText} className="font-bold text-2xl text-orange-600">Sign in with Facebook</Text>
+            <Text style={styles.orText}>Sign in with Google</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -169,15 +173,16 @@ const styles = StyleSheet.create({
     width: "80%",
     alignSelf: "center",
     paddingLeft: 10,
-    gap: 100,
+    gap: 110,
     alignItems: "center",
+    marginTop: 10
   },
   pageTitle: {
     fontWeight: "900",
     fontSize: 20,
   },
   formContainer: {
-    marginTop: 40,
+    marginTop: 25,
     marginBottom: 5,
     alignItems: "center",
   },
@@ -262,37 +267,39 @@ const styles = StyleSheet.create({
     color: "blue",
   },
   forgot: {
-    position: 'absolute',
-    bottom: 305,
-    right: 40
+    // position: 'absolute',
+    // bottom: 305,
+    // right: 40
+    alignSelf: "flex-end",
+    right: 35,
+    color: 'blue'
   },
   sign: {
-    position: "absolute",
-    bottom: 200,
+    // position: "absolute",
+    // bottom: 200,
+    marginTop: 25,
     alignSelf: "center",
     width: "80%",
     backgroundColor: "#0c97fa",
     justifyContent: "center",
     alignItems: "center",
-    height: 60,
+    height: 55,
     borderRadius: 50,
   },
   already: {
     width: "100%",
     alignSelf: "center",
     alignItems: "center",
-    position: "absolute",
-    bottom: 175,
+    marginTop: 10
   },
   orContainer: {
     width: '100%',
-    position: 'absolute',
-    bottom: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 10
   },
   orBtn: {
     height: 45,
-    backgroundColor: "rgba(222, 222, 222,0.5)",
+    // backgroundColor: "rgba(222, 222, 222,0.5)",
     borderColor: "rgba(0,0,0,0.2)",
     borderWidth: 1,
     marginBottom: 25,

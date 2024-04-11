@@ -7,7 +7,11 @@ const ForgotLayout = () => {
 
     return (
         <Stack>
-            <Stack.Screen name="forgotPassword" options={{ headerShown: false }} />
+            <Stack.Screen name="forgotPassword" options={{ 
+                presentation: 'modal',
+                animation: 'flip',
+                headerShown: false
+                 }} />
             <Stack.Screen name="reset" options={{ headerShown: false }} />
         </Stack>
     );
