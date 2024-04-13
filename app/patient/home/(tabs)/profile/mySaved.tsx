@@ -31,14 +31,14 @@ const MySaved = () => {
       rating: 5,
       isFavorite: true,
     },
-    // {
-    //   id: 4,
-    //   image: Paracetamol,
-    //   name: 'Paracetamol',
-    //   volume: '75ml',
-    //   rating: 3,
-    //   isFavorite: true,
-    // },
+    {
+      id: 4,
+      image: Paracetamol,
+      name: 'Paracetamol',
+      volume: '75ml',
+      rating: 3,
+      isFavorite: true,
+    },
     // {
     //   id: 5,
     //   image: Paracetamol,
@@ -98,14 +98,14 @@ const MySaved = () => {
                 <View style={tw`border-t border-gray-400 my-4`} />
               </View>
             ))}
+            <View style={tw`w-full items-center`}>
+              <TouchableOpacity
+                style={tw`w-4/5 bg-blue-500 p-3 items-center rounded-xl`}
+              >
+                <Text style={tw`text-white font-bold`}>Add new</Text>
+              </TouchableOpacity>
+            </View>
           </SafeAreaView>
-          <View style={tw`w-full items-center`}>
-            <TouchableOpacity
-              style={tw`w-4/5 bg-blue-500 p-3 items-center rounded-xl`}
-            >
-              <Text style={tw`text-white font-bold`}>Add new</Text>
-            </TouchableOpacity>
-          </View>
         </ScrollView>
       </View>
     </View>

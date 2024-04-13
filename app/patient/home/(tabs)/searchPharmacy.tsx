@@ -38,6 +38,7 @@ const searchPharmacy = () => {
             longitudeDelta: 0.0121,
           }}
         >
+          
         </MapView>
       </View>
     </View>
