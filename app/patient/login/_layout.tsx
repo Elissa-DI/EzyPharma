@@ -138,7 +138,12 @@ const PatientLogin = () => {
           <Text style={{ color: "blue" }}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.sign}>
+      <TouchableOpacity
+        style={styles.sign}
+        onPress={() => {
+          router.navigate('/patient/home')
+        }}
+      >
         <Text style={{ color: "white", fontSize: 18 }}>Login</Text>
       </TouchableOpacity>
       <View style={styles.already}>
