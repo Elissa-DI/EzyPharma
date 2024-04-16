@@ -189,7 +189,7 @@ const Layout = () => {
 
   return (
     <View style={tw`w-full px-5`}>
-      <View style={tw`backing flex-row items-center gap-28 mt-10 py-4`}>
+      <View style={tw`flex-row items-center gap-28 mt-10 py-4`}>
         <TouchableOpacity onPress={() => setShow(false)}>
           <FontAwesome name="chevron-left" size={18} />
         </TouchableOpacity>
