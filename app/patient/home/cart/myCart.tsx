@@ -4,7 +4,7 @@ import { Link } from 'expo-router'
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import tw from 'twrnc'
 
-const CartLayout = () => {
+const MyCart = () => {
     const [favorites, setFavorites] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [medicine, setMedicine] = useState({
@@ -294,4 +294,4 @@ const CartLayout = () => {
     )
 }
 
-export default CartLayout
+export default MyCart
