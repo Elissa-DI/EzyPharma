@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Button } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import tw from 'twrnc';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import CustomMarker from '@/components/customMarker';
 import { Link, router, useNavigation, useRouter } from 'expo-router';
 
-const SearchPharmacy = () => {
-    const [searchQuery, setSearchQuery] = useState<string>('');
+const addLocation = () => {
     const [userLocation, setUserLocation] = useState<any>(null);
-    const [selectedPharmacy, setSelectedPharmacy] = useState(null);
-    const navigation = useNavigation();
     const router = useRouter();
 
     useEffect(() => {
@@ -31,39 +28,6 @@ const SearchPharmacy = () => {
         console.log(currentLocation.coords);
 
     };
-
-    const pharmacies = [
-        {
-            "id": 1,
-            "name": "Access pharmacy ltd",
-            "address": {
-                "latitude": -1.5976637,
-                "longitude": 30.0535555
-            },
-            "rating": '4.5'
-        },
-        {
-            "id": 2,
-            "name": "Caritate pharmacy",
-            "address": {
-                "latitude": -1.5826637,
-                "longitude": 30.0599999
-            },
-            "rating": '5.0'
-        },
-    ]
-    const handlePress = (pharmacyId: number, pharmacyName: string) => {
-        const pharmacy = pharmacies.find((pharmacy) => pharmacy.id === pharmacyId);
-        if (pharmacy) {
-            const url = `/patient/home/(pharmacy)/${pharmacy.id}?id=${pharmacyId}&name=${encodeURIComponent(pharmacyName)}`;
-            router.navigate(url);
-            setSelectedPharmacy(pharmacy);
-        }
-    }
-
-    //This is for testing a polyline
-    
-
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.container}>
@@ -89,36 +53,12 @@ const SearchPharmacy = () => {
                             }}
                             title="Your Location"
                         />
-                        {pharmacies.map((pharmacy) => (
-                            <Marker
-                                key={pharmacy.id}
-                                coordinate={pharmacy.address}
-                                title={pharmacy.name}
-                                // onPress={() => handlePharmacyRedirect(pharmacy.id, pharmacy.name)}
-                                onPress={() => handlePress(pharmacy.id, pharmacy.name)}
-
-                            >
-                                <CustomMarker rating={pharmacy.rating} />
-                            </Marker>
-                        ))}
-                        {selectedPharmacy && (
-                        <Polyline
-                            coordinates={[
-                                { latitude: userLocation.latitude, longitude: userLocation.longitude },
-                                { latitude: selectedPharmacy.address.latitude, longitude: selectedPharmacy.address.longitude }
-                            ]}
-                            strokeColor="#FF0000" // Change this to customize the polyline color
-                            strokeWidth={2}
-                        />
-                    )}
                     </MapView>
                 )}
             </View>
         </View>
-    );
-};
-
-export default SearchPharmacy;
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -132,3 +72,5 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
     },
 });
+
+export default addLocation

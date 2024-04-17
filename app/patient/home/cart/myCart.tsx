@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity, Modal, TextInput } from 'react-native'
 import React, { useState } from 'react'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import tw from 'twrnc'
 
@@ -67,7 +67,7 @@ const MyCart = () => {
         setShowSuccessModal(true); // Show the "Payment successfully made" modal
     };
     return (
-        <View style={tw`px-5 items`}>
+        <View style={tw`px-5`}>
             <View style={tw`w-full flex-row items-center gap-10 mt-10 py-4`}>
                 <View style={tw`w-[10%]`}>
                     <Link href="../">
@@ -218,7 +218,10 @@ const MyCart = () => {
                             <Text style={tw`text-gray-400 w-44`}>For delivery service confirm your location</Text>
                             <TouchableOpacity
                                 style={tw`w-5/7 mt-5 items-center bg-blue-600 py-3 px-5 rounded-full`}
-                                onPress={() => { }}
+                                onPress={() => {                                    
+                                    router.navigate('/patient/home/cart/addLocation');
+                                    console.log('Its clicked')
+                                }}
                             >
                                 <Text style={tw`text-white font-semibold`}>Add location</Text>
                             </TouchableOpacity>
@@ -282,7 +285,9 @@ const MyCart = () => {
                             <View style={tw`items-center gap-4`}>
                                 <Text style={tw`font-bold text-xl mb-3`}>Payment success</Text>
                                 <Text style={tw`text-gray-400 w-44`}>Your payment has been successful, Subscribe to get additional services from us</Text>
-                                <TouchableOpacity style={tw`w-5/7 mt-5 items-center bg-blue-600 py-3 px-5 rounded-full`} onPress={() => { }}>
+                                <TouchableOpacity style={tw`w-5/7 mt-5 items-center bg-blue-600 py-3 px-5 rounded-full`} 
+                                onPress={() => {
+                                }}>
                                     <Text style={tw`text-white font-semibold`}>Allow location</Text>
                                 </TouchableOpacity>
                             </View>
