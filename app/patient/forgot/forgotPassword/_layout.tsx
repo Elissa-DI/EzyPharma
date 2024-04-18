@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import tw from 'twrnc';
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
 import { router, Link, useRouter, Stack } from 'expo-router';
+import { useToast } from "react-native-toast-notifications";
+import axios from 'axios';
 
 const ForgotPassword = () => {
   const [password, setPassword] = useState<string>('');
@@ -10,13 +12,38 @@ const ForgotPassword = () => {
   const [phone, setPhone] = useState<string>('');
   const [phoneOrEmail, setPhoneOrEmail] = useState("email");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const handleForgotSubmit = () => {
+
+  const toast = useToast();
+  // const handleForgotSubmit = () => {
+  //   setIsSubmitting(true);
+  //   setTimeout(() => {
+  //     setIsSubmitting(false);
+  //     router.navigate("/patient/forgot/reset")
+  //   }, 1500)
+  // }
+  const handleForgotSubmit = async () => {
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      router.navigate("/patient/forgot/reset")
-    }, 1500)
-  }
+    try {
+      const response = await axios.post('https://ezypharma-backend.onrender.com/auth/forgot-password', {
+        email,
+      });
+      if (response.status === 200) {
+        // Handle successful submission
+        console.log(response.data.message);
+        toast.show('Code successfully sent!'); // Message indicating confirmation code sent
+        router.navigate("/patient/forgot/reset");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 422) {
+        console.log('Validation Error:', error.response.data.detail);
+        toast.show('Validation error')
+      } else {
+        // console.log('An error occurred. Please try again later.');
+        toast.show('An error occurred. Please try again later.');
+      }
+    }
+    setIsSubmitting(false);
+  };
   return (
     <View>
       <View style={tw`mt-12 py-1 px-8`}>

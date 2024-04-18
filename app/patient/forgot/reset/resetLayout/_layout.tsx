@@ -3,12 +3,47 @@ import React, { useState } from 'react'
 import { Link, router } from 'expo-router'
 import tw from 'twrnc';
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
+import { useToast } from "react-native-toast-notifications";
+import axios from 'axios';
 
 const CodeVerificationLayout = () => {
-  const [verificationMethod, setVerificationMethod] = useState<string>('phone')
+  const [verificationMethod, setVerificationMethod] = useState<string>('email');
+  const [code, setCode] = useState<string>(''); // State to store the entered verification code
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false); // State to track whether the form is submitting
+  const toast = useToast();
 
-  const handleVerify = () => {
-    router.navigate('/patient/forgot/reset/resetPassword')
+  // const handleVerify = () => {
+  //   router.navigate('/patient/forgot/reset/resetPassword')
+  // }
+  const handleVerify = async () => {
+    setIsSubmitting(true); // Set submitting state to true
+    try {
+      const response = await axios.post('https://ezypharma-backend.onrender.com/auth/verify-account', {
+        email: 'user@example.com', // Replace with user's email or phone number
+        code: code // Send the entered verification code
+      });
+      if (response.status === 200) {
+        // Handle successful verification
+        console.log(response.data.message); // Log success message
+        router.navigate('/patient/forgot/reset/resetPassword'); // Navigate to the next screen
+      }
+    } catch (error: any) {
+      if (error.response) {
+        // Handle different error scenarios
+        if (error.response.status === 401) {
+          console.log('Invalid verification code');
+        } else if (error.response.status === 404) {
+          console.log('User not found');
+        } else if (error.response.status === 422) {
+          console.log('Validation Error:', error.response.data.detail);
+        } else {
+          console.log('Internal server error');
+        }
+      } else {
+        console.log('An error occurred. Please try again later.');
+      }
+    }
+    setIsSubmitting(false); // Set submitting state to false after request completes
   }
   const handleResend = () => {
     console.log("Resent the code please!")
@@ -47,7 +82,9 @@ const CodeVerificationLayout = () => {
       </View>
       <View style={tw`items-center`}>
         <TouchableOpacity style={tw`w-full items-center bg-blue-600 py-5 rounded-full`} onPress={handleVerify}>
-          <Text style={tw`text-white font-semibold`}>Verify</Text>
+          <Text style={tw`text-white font-semibold`}>
+            {isSubmitting ? 'Verifying...' : 'Verify'}
+          </Text>
         </TouchableOpacity>
         <View style={tw`flex-row my-5`}>
           <Text style={tw`text-gray-500`}>Didn't receive the code?</Text>

@@ -6,17 +6,31 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import CustomMarker from '@/components/customMarker';
 import { Link, router, useNavigation, useRouter } from 'expo-router';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+interface Pharmacy {
+    id: string;
+    name: string;
+    address: {
+        latitude: number,
+        longitude: number
+    }
+    rating: number;
+    // Add other attributes as needed
+}
 
 const SearchPharmacy = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [userLocation, setUserLocation] = useState<any>(null);
-    const [selectedPharmacy, setSelectedPharmacy] = useState(null);
+    const [selectedPharmacy, setSelectedPharmacy] = useState<Pharmacy[] | null>(null);
+    const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
     const navigation = useNavigation();
     const router = useRouter();
 
     useEffect(() => {
-        // Get user's current location when component mounts
         getUserLocation();
+        fetchPharmacies();
     }, []);
 
     const getUserLocation = async () => {
@@ -32,7 +46,68 @@ const SearchPharmacy = () => {
 
     };
 
-    const pharmacies = [
+    // const fetchPharmacies = async () => {
+    //     try {
+    //         const response = await axios.get('https://ezypharma-backend.onrender.com/pharmacy/');
+    //         if (response.status === 200) {
+    //             setPharmaciess(response.data);
+    //             console.log("Fetched Pharmacies:", response.data);
+    //         }
+    //     } catch (error) {
+    //         console.log('Error fetching pharmacies:', error);
+    //     }
+    // }; 
+    // const fetchPharmacies = async () => {
+    //     try {
+    //       // Retrieve access token from AsyncStorage
+    //       const access_token = await AsyncStorage.getItem('access_token');
+    //       const response = await axios.get('https://ezypharma-backend.onrender.com/pharmacy/', {
+    //         headers: {
+    //           Authorization: `Bearer ${access_token}`
+    //         }
+    //       });
+    //       if (response.status === 200) {
+    //         setPharmaciess(response.data);
+    //         console.log("Fetched Pharmacies:", response.data);
+    //       }
+    //     } catch (error) {
+    //       console.log('Error fetching pharmacies:', error);
+    //     }
+    //   };  
+    const fetchPharmacies = async () => {
+        try {
+            // Retrieve access token from AsyncStorage
+            const access_token = await AsyncStorage.getItem('access_token');
+            const response = await axios.get('https://ezypharma-backend.onrender.com/pharmacy/', {
+                headers: {
+                    Authorization: `Bearer ${access_token}`
+                }
+            });
+            if (response.status === 200) {
+                console.log(response.data)
+                // Map the response data to match the expected structure
+                const mappedData: Pharmacy[] = response.data.map((pharmacy: any) => ({
+                    id: pharmacy._id, // Assuming the API provides an ID for each pharmacy
+                    name: pharmacy.name,
+                    address: {
+                        latitude: pharmacy.lat,
+                        longitude: pharmacy.long
+                    },
+                    rating: pharmacy.rating,
+                    // Add other attributes if needed
+                }));
+
+                // Update state with mapped data
+                setPharmacies(mappedData);
+                console.log("Fetched Pharmacies:", mappedData);
+            }
+        } catch (error) {
+            console.log('Error fetching pharmacies:', error);
+        }
+    };
+
+
+    const pharmaciess = [
         {
             "id": 1,
             "name": "Access pharmacy ltd",
@@ -40,7 +115,7 @@ const SearchPharmacy = () => {
                 "latitude": -1.5976637,
                 "longitude": 30.0535555
             },
-            "rating": '4.5'
+            "rating": '4.3'
         },
         {
             "id": 2,
@@ -49,10 +124,19 @@ const SearchPharmacy = () => {
                 "latitude": -1.5826637,
                 "longitude": 30.0599999
             },
+            "rating": '4.6'
+        },
+        {
+            "id": 3,
+            "name": "Pharmacie de Byumba",
+            "address": {
+                "latitude": -1.5796637,
+                "longitude": 30.0599999
+            },
             "rating": '5.0'
         },
     ]
-    const handlePress = (pharmacyId: number, pharmacyName: string) => {
+    const handlePress = (pharmacyId: string, pharmacyName: string) => {
         const pharmacy = pharmacies.find((pharmacy) => pharmacy.id === pharmacyId);
         if (pharmacy) {
             const url = `/patient/home/(pharmacy)/${pharmacy.id}?id=${pharmacyId}&name=${encodeURIComponent(pharmacyName)}`;
@@ -89,10 +173,17 @@ const SearchPharmacy = () => {
                             }}
                             title="Your Location"
                         />
-                        {pharmacies.map((pharmacy) => (
+                        {pharmacies.map((pharmacy, index) => (
                             <Marker
-                                key={pharmacy.id}
-                                coordinate={pharmacy.address}
+                                key={index}
+                                // coordinate={{
+                                //     latitude: pharmacy.lat,
+                                //     longitude: pharmacy.long
+                                // }}
+                                coordinate={{
+                                    latitude: pharmacy.address.latitude,
+                                    longitude: pharmacy.address.longitude,
+                                }}
                                 title={pharmacy.name}
                                 // onPress={() => handlePharmacyRedirect(pharmacy.id, pharmacy.name)}
                                 onPress={() => handlePress(pharmacy.id, pharmacy.name)}
@@ -101,7 +192,7 @@ const SearchPharmacy = () => {
                                 <CustomMarker rating={pharmacy.rating} />
                             </Marker>
                         ))}
-                        {selectedPharmacy && (
+                        {/* {selectedPharmacy && (
                             <Polyline
                                 coordinates={[
                                     {
@@ -114,7 +205,7 @@ const SearchPharmacy = () => {
                                 strokeColor="#FF0000" // Change this to customize the polyline color
                                 strokeWidth={2}
                             />
-                        )}
+                        )} */}
                     </MapView>
                 )}
             </View>

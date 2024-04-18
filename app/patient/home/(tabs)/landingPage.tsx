@@ -1,5 +1,5 @@
 import { ScrollView, View, Text, Image, TextInput, TouchableOpacity, Dimensions } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import tw from 'twrnc'
 import { Feather, FontAwesome } from '@expo/vector-icons';
 
@@ -7,10 +7,12 @@ import { Feather, FontAwesome } from '@expo/vector-icons';
 import article1 from '@/assets/images/article1.png';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import axios from 'axios';
 const { height } = Dimensions.get('window');
 
 const landingPage = () => {
-    const name = 'Ruchita';
+    // const name = 'Ruchita';
+    const [name, setName] = useState<string>('');
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
     const articles = [
@@ -72,6 +74,23 @@ const landingPage = () => {
     const handleRedirectPharmacy = () => {
         router.navigate('/patient/home/searchPharmacy')
     }
+
+    useEffect(() => {
+        fetchUserName(); // Fetch the user's name when the component mounts
+    }, []);
+
+
+    const fetchUserName = async () => {
+        try {
+            const response = await axios.get('https://ezypharma-backend.onrender.com/users/${userId}');
+            if (response.status === 200) {
+                setName(response.data.name);
+                console.log(response.data);
+            }
+        } catch (error) {
+            console.log('Error fetching user name:', error);
+        }
+    };
     return (
         <View>
             <View style={tw`flex-row pt-12 bg-[#D5ECF4]`}>
@@ -136,45 +155,45 @@ const landingPage = () => {
                             <Text style={tw`text-blue-600 items-center justify-center`}>See all</Text>
                         </TouchableOpacity>
                     </View>
-                        <ScrollView>
-                            <SafeAreaView style={tw`flex-grow gap-2`}>
-                                {articles.map((article) => (
-                                    <View
-                                        key={article.id}
-                                        style={tw`h-18 flex-row p-1 gap-3 border border-gray-400 rounded-md`}
-                                    >
-                                        <View>
-                                            <Image
-                                                source={require('@/assets/images/article1.png')}
-                                                style={tw`h-[95%] w-19`}
-                                            />
+                    <ScrollView>
+                        <SafeAreaView style={tw`flex-grow gap-2`}>
+                            {articles.map((article) => (
+                                <View
+                                    key={article.id}
+                                    style={tw`h-18 flex-row p-1 gap-3 border border-gray-400 rounded-md`}
+                                >
+                                    <View>
+                                        <Image
+                                            source={require('@/assets/images/article1.png')}
+                                            style={tw`h-[95%] w-19`}
+                                        />
+                                    </View>
+                                    <View style={tw`gap-1 w-full`}>
+                                        <View style={tw`flex-row w-[70%] justify-between p-1`}>
+                                            <View style={tw`w-4/5`}>
+                                                <Text style={[tw`font-bold`, { fontSize: 10 }]}>{article.title}</Text>
+                                            </View>
+                                            <View style={tw``}>
+                                                <TouchableOpacity
+                                                    onPress={handleBookmarks}
+                                                >
+                                                    <FontAwesome
+                                                        name={isBookmarked ? 'bookmark' : 'bookmark-o'}
+                                                        size={16}
+                                                        color='blue'
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
                                         </View>
-                                        <View style={tw`gap-1 w-full`}>
-                                            <View style={tw`flex-row w-[70%] justify-between p-1`}>
-                                                <View style={tw`w-4/5`}>
-                                                    <Text style={[tw`font-bold`, { fontSize: 10 }]}>{article.title}</Text>
-                                                </View>
-                                                <View style={tw``}>
-                                                    <TouchableOpacity
-                                                        onPress={handleBookmarks}
-                                                    >
-                                                        <FontAwesome
-                                                            name={isBookmarked ? 'bookmark' : 'bookmark-o'}
-                                                            size={16}
-                                                            color='blue'
-                                                        />
-                                                    </TouchableOpacity>
-                                                </View>
-                                            </View>
-                                            <View style={tw`flex-row gap-4`}>
-                                                <Text style={[tw`text-gray-500`, { fontSize: 10 }]}>{article.postedDate}</Text>
-                                                <Text style={[tw`text-gray-500`, { fontSize: 10 }]}>{article.timeRead}min read</Text>
-                                            </View>
+                                        <View style={tw`flex-row gap-4`}>
+                                            <Text style={[tw`text-gray-500`, { fontSize: 10 }]}>{article.postedDate}</Text>
+                                            <Text style={[tw`text-gray-500`, { fontSize: 10 }]}>{article.timeRead}min read</Text>
                                         </View>
                                     </View>
-                                ))}
-                            </SafeAreaView>
-                        </ScrollView>
+                                </View>
+                            ))}
+                        </SafeAreaView>
+                    </ScrollView>
                 </View>
             </View>
         </View>

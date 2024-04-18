@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
@@ -14,6 +15,7 @@ import { router } from "expo-router";
 import tw from 'twrnc'
 import axios from "axios";
 import { useToast } from "react-native-toast-notifications";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PatientLogin = () => {
   const nav = useNavigation();
@@ -25,28 +27,23 @@ const PatientLogin = () => {
 
   const toast = useToast();
 
-  
+
   const handlePatientLogin = async () => {
     try {
-        const response = await axios.post('https://ezypharma-backend.onrender.com/auth/login', {
-            email,
-            password
-        });
-        if (response.status === 200) {
-            router.navigate('/patient/home');
-            toast.show('Successfully logged in!');
-        }
+      const response = await axios.post('https://ezypharma-backend.onrender.com/auth/login', {
+        email,
+        password
+      });
+      if (response.status === 200) {
+        const { access_token } = response.data;
+        await AsyncStorage.setItem('access_token', access_token);
+        router.navigate('/patient/home');
+        toast.show('Successfully logged in!');
+      }
     } catch (error) {
-        // if (error.response && error.response.status === 422) {
-        //     // Handle validation errors
-        //     console.log('Validation Error:', error.response.data);
-        // } else {
-        //     // Handle other errors
-        //     console.log('An error occurred. Please try again later.');
-        // }
-        toast.show('An error occurred. Please try again');
+      toast.show('An error occurred. Please try again');
     }
-};
+  };
 
   const handleForgot = () => {
     router.navigate('/patient/forgot')
