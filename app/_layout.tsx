@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
 import { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
+import { ToastProvider } from 'react-native-toast-notifications'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -47,9 +48,16 @@ function RootLayoutNav() {
   const router = useRouter();
 
   return (
-    <Stack>
-      <Stack.Screen name="(intro)" options={{ headerShown: false }} />
-      <Stack.Screen name="patient" options={{ headerShown: false }} />
-    </Stack>
+    <ToastProvider
+      placement="top"
+      animationType='slide-in'
+      successColor="green"
+      dangerColor="red"
+    >
+      <Stack>
+        <Stack.Screen name="(intro)" options={{ headerShown: false }} />
+        <Stack.Screen name="patient" options={{ headerShown: false }} />
+      </Stack>
+    </ToastProvider>
   );
 }

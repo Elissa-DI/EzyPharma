@@ -62,7 +62,7 @@ const SearchPharmacy = () => {
     }
 
     //This is for testing a polyline
-    
+
 
     return (
         <View style={{ flex: 1 }}>
@@ -74,7 +74,7 @@ const SearchPharmacy = () => {
                         initialRegion={{
                             // latitude: userLocation.latitude,
                             // longitude: userLocation.longitude,
-                            latitude:  -1.5976637,
+                            latitude: -1.5976637,
                             longitude: 30.0535555,
                             latitudeDelta: 0.015,
                             longitudeDelta: 0.0121,
@@ -82,9 +82,9 @@ const SearchPharmacy = () => {
                     >
                         <Marker
                             coordinate={{
-                                // latitude: userLocation.latitude,
+                                //  latitude: userLocation.latitude,
                                 // longitude: userLocation.longitude,
-                                latitude:  -1.5986637,
+                                latitude: -1.5986637,
                                 longitude: 30.0512555,
                             }}
                             title="Your Location"
@@ -102,15 +102,19 @@ const SearchPharmacy = () => {
                             </Marker>
                         ))}
                         {selectedPharmacy && (
-                        <Polyline
-                            coordinates={[
-                                { latitude: userLocation.latitude, longitude: userLocation.longitude },
-                                { latitude: selectedPharmacy.address.latitude, longitude: selectedPharmacy.address.longitude }
-                            ]}
-                            strokeColor="#FF0000" // Change this to customize the polyline color
-                            strokeWidth={2}
-                        />
-                    )}
+                            <Polyline
+                                coordinates={[
+                                    {
+                                        //latitude: userLocation.latitude, longitude: userLocation.longitude
+                                        latitude: -1.5986637,
+                                        longitude: 30.0512555,
+                                    },
+                                    { latitude: selectedPharmacy.address.latitude, longitude: selectedPharmacy.address.longitude }
+                                ]}
+                                strokeColor="#FF0000" // Change this to customize the polyline color
+                                strokeWidth={2}
+                            />
+                        )}
                     </MapView>
                 )}
             </View>

@@ -12,6 +12,8 @@ import React, { useState } from "react";
 import Checkbox from "expo-checkbox";
 import { router } from "expo-router";
 import tw from 'twrnc'
+import axios from "axios";
+import { useToast } from "react-native-toast-notifications";
 
 const PatientLogin = () => {
   const nav = useNavigation();
@@ -21,7 +23,31 @@ const PatientLogin = () => {
   const [phoneOrEmail, setPhoneOrEmail] = useState("email");
   const [isShowm, setIsShowm] = useState(false);
 
-  //Functions
+  const toast = useToast();
+
+  
+  const handlePatientLogin = async () => {
+    try {
+        const response = await axios.post('https://ezypharma-backend.onrender.com/auth/login', {
+            email,
+            password
+        });
+        if (response.status === 200) {
+            router.navigate('/patient/home');
+            toast.show('Successfully logged in!');
+        }
+    } catch (error) {
+        // if (error.response && error.response.status === 422) {
+        //     // Handle validation errors
+        //     console.log('Validation Error:', error.response.data);
+        // } else {
+        //     // Handle other errors
+        //     console.log('An error occurred. Please try again later.');
+        // }
+        toast.show('An error occurred. Please try again');
+    }
+};
+
   const handleForgot = () => {
     router.navigate('/patient/forgot')
   }
@@ -140,9 +166,7 @@ const PatientLogin = () => {
       </View>
       <TouchableOpacity
         style={styles.sign}
-        onPress={() => {
-          router.navigate('/patient/home')
-        }}
+        onPress={handlePatientLogin}
       >
         <Text style={{ color: "white", fontSize: 18 }}>Login</Text>
       </TouchableOpacity>

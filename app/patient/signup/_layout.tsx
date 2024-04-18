@@ -5,15 +5,18 @@ import {
     StyleSheet,
     TextInput,
     TouchableOpacity,
+    Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Checkbox from "expo-checkbox";
 import { Link, router } from "expo-router";
 import tw from "twrnc";
 import Modal from "react-native-modal";
 
+import axios from 'axios'
+import { useToast } from "react-native-toast-notifications";
 
 const PatientSignup = () => {
     const nav = useNavigation();
@@ -27,12 +30,42 @@ const PatientSignup = () => {
     const [terms, setTerms] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const handleSignup = () => {
-        setIsModalVisible(true)
+    const toast = useToast();
+
+    const handleSignup = async () => {
+        try {
+            let response
+            if (email.length > 0) {
+                response = await axios.post('https://ezypharma-backend.onrender.com/auth/register', {
+                    name,
+                    email,
+                    password
+                })
+            }
+            if (phone.length > 0) {
+                response = await axios.post('https://ezypharma-backend.onrender.com/auth/register', {
+                    name,
+                    phone,
+                    password
+                })
+            }
+            setIsModalVisible(true)
+            if (response?.status === 201) {
+                toast.show('You have been registered successfully!');
+            }
+        } catch (error) {
+            // if (error.response && error.response.status === 422) {
+            //     toast.show('Please check your inputs and try again.');
+            // } else {
+            //     toast.show('An error occurred. Please try again later.');
+            // }
+            toast.show('An error occurred. Please try again later.');
+            console.log(error);
+        }
     }
     const handleLogin = () => {
         router.navigate('/patient/login')
-      }
+    }
     const LocationModal = () => (
         <View style={tw`items-center bg-white p-5 rounded-lg`}>
             <View style={tw`w-full items-end`}>
@@ -74,9 +107,9 @@ const PatientSignup = () => {
                     <TextInput
                         placeholder="Enter your name"
                         value={name}
-                        onChangeText={(text) => setName(text)}
+                        // onChangeText={(text) => setName(text)}
                         style={styles.textInput}
-                    // onChange={setName}
+                        onChangeText={setName}
                     />
                 </View>
                 <View style={styles.inputCheckbox}>
@@ -87,6 +120,7 @@ const PatientSignup = () => {
                         ]}
                         onPress={() => {
                             setPhoneOrEmail("email");
+                            setPhone("")
                         }}
                     >
                         <Ionicons
@@ -110,6 +144,7 @@ const PatientSignup = () => {
                         ]}
                         onPress={() => {
                             setPhoneOrEmail("phone");
+                            setEmail("")
                         }}
                     >
                         <Ionicons
@@ -132,8 +167,8 @@ const PatientSignup = () => {
                         <TextInput
                             placeholder="Enter your email"
                             value={email}
-                            // onChange={setEmail}
-                            onChangeText={(email) => setEmail(email)}
+                            onChangeText={setEmail}
+                            // onChangeText={(email) => setEmail(email)}
                             style={styles.textInput}
                         />
                     </View>
@@ -143,8 +178,8 @@ const PatientSignup = () => {
                         <TextInput
                             placeholder="Enter your phone"
                             value={phone}
-                            // onChange={setPhone}
-                            onChangeText={(phone) => setPhone(phone)}
+                            onChangeText={setPhone}
+                            // onChangeText={(phone) => setPhone(phone)}
                             style={styles.textInput}
                         />
                     </View>
@@ -154,8 +189,8 @@ const PatientSignup = () => {
                     <TextInput
                         placeholder="Enter your password"
                         value={password}
-                        // onChange={setPassword}
-                        onChangeText={(password) => setPassword(password)}
+                        onChangeText={setPassword}
+                        // onChangeText={(password) => setPassword(password)}
                         secureTextEntry={isShowm ? false : true}
                         style={styles.passInput}
                     />
