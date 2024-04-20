@@ -6,6 +6,7 @@ import {
     TextInput,
     TouchableOpacity,
     Alert,
+    ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
@@ -29,10 +30,12 @@ const PatientSignup = () => {
     const [isShowm, setIsShowm] = useState(false);
     const [terms, setTerms] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const toast = useToast();
 
     const handleSignup = async () => {
+        setIsSubmitting(true);
         try {
             let response
             if (email.length > 0) {
@@ -61,6 +64,8 @@ const PatientSignup = () => {
             // }
             toast.show('An error occurred. Please try again later.');
             console.log(error);
+        } finally {
+            setIsSubmitting(false); // Set isSubmitting back to false after submission
         }
     }
     const handleLogin = () => {
@@ -96,8 +101,12 @@ const PatientSignup = () => {
     return (
         <SafeAreaView style={{ height: "100%" }}>
             <View style={styles.title}>
-                <TouchableOpacity>
-                    <FontAwesome name="chevron-left" />
+                <TouchableOpacity
+                    onPress={() => {
+                        router.navigate('../')
+                    }}
+                >
+                    <FontAwesome name="chevron-left" size={20} />
                 </TouchableOpacity>
                 <Text style={styles.pageTitle}>Sign Up</Text>
             </View>
@@ -208,7 +217,7 @@ const PatientSignup = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={[styles.terms, tw``]}>
+            <View style={[styles.terms, tw`items-center`]}>
                 <Checkbox
                     value={terms}
                     onValueChange={setTerms}
@@ -222,16 +231,21 @@ const PatientSignup = () => {
                 </Text>
             </View>
             <TouchableOpacity
-                style={styles.sign}
+                style={[styles.sign, !terms && { backgroundColor: 'lightgray' }]}
                 onPress={handleSignup}
+                disabled={!terms || isSubmitting} // Disable button while submitting or if terms are not agreed
             >
-                <Text style={{ color: "white", fontSize: 18 }}>Sign Up</Text>
+                {isSubmitting ? (
+                    <ActivityIndicator size="small" color="#fff" /> // Show activity indicator while submitting
+                ) : (
+                    <Text style={{ color: "white", fontSize: 18 }}>Sign Up</Text>
+                )}
             </TouchableOpacity>
             <View style={styles.already}>
                 <Text style={{ fontSize: 17 }}>
                     Already have an account?{" "}
                     <TouchableOpacity onPress={handleLogin}>
-                        <Text style={{ color: "blue" }}>Login</Text>
+                        <Text style={tw`text-center text-blue-900`}>Login</Text>
                     </TouchableOpacity>
                 </Text>
             </View>
@@ -258,7 +272,7 @@ const styles = StyleSheet.create({
     },
     formContainer: {
         marginTop: 40,
-        marginBottom: 60,
+        marginBottom: 20,
         alignItems: "center",
     },
     input: {
@@ -342,7 +356,7 @@ const styles = StyleSheet.create({
         color: "blue",
     },
     sign: {
-        marginTop: 110,
+        marginTop: 50,
         alignSelf: "center",
         width: "80%",
         backgroundColor: "#0c97fa",

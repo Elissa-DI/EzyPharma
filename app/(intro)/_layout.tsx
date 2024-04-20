@@ -113,7 +113,7 @@ const Layout = () => {
               <View style={{ width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: selectedOption === 'hospital' ? 'blue' : 'gray', justifyContent: 'center', alignItems: 'center', marginRight: 10 }}>
                 {selectedOption === 'hospital' && <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: 'blue' }} />}
               </View>
-              <Text style={tw`ml-8 text-gray-600 font-semibold`}>Referal Hospital</Text>
+              <Text style={tw`ml-8 text-gray-600 font-semibold`}>Hospital</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => handleOptionSelect('pharmacy')} style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
               <View style={{ width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: selectedOption === 'pharmacy' ? 'blue' : 'gray', justifyContent: 'center', alignItems: 'center', marginRight: 10 }}>
@@ -170,15 +170,33 @@ const Layout = () => {
         }}
         renderSkipButton={() => buttonLabel('Skip')}
         renderDoneButton={() => {
-          return (
-            <View style={tw`bg-blue-600 p-3 rounded-full`}>
-              <Ionicons
-                name='checkmark'
-                color="white"
-                size={20}
-              />
-            </View>
-          );
+          // return (
+          //   <View style={tw`bg-blue-600 p-3 rounded-full`}>
+          //     <Ionicons
+          //       name='checkmark'
+          //       color="white"
+          //       size={20}
+          //     />
+          //   </View>
+          // );
+          if (selectedOption !== '') {
+            // If an option is selected, render the "Done" button
+            return (
+              <TouchableOpacity
+                onPress={handleDone}
+                style={tw`bg-blue-600 p-3 rounded-full`}
+              >
+                <Ionicons
+                  name='checkmark'
+                  color="white"
+                  size={20}
+                />
+              </TouchableOpacity>
+            );
+          } else {
+            // If no option is selected, return null to hide the "Done" button
+            return null;
+          }
         }}
         onDone={handleDone}
       />

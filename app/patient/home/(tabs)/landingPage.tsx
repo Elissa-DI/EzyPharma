@@ -15,6 +15,7 @@ const landingPage = () => {
     const [name, setName] = useState<string>('');
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+    const [bookmarkStatus, setBookmarkStatus] = useState<{ [key: number]: boolean }>({});
     const articles = [
         {
 
@@ -67,12 +68,12 @@ const landingPage = () => {
             timeRead: 5
         }
     ]
-    const handleBookmarks = () => {
-        setIsBookmarked(!isBookmarked)
-    }
+    // const handleBookmarks = () => {
+    //     setIsBookmarked(!isBookmarked)
+    // }
 
     const handleRedirectPharmacy = () => {
-        router.navigate('/patient/home/searchPharmacy')
+        router.navigate('/patient/home/(tabs)/pharmacy/searchPharmacy')
     }
 
     useEffect(() => {
@@ -91,18 +92,25 @@ const landingPage = () => {
             console.log('Error fetching user name:', error);
         }
     };
+
+    const handleBookmarks = (articleId: number) => {
+        setBookmarkStatus((prevStatus) => ({
+            ...prevStatus,
+            [articleId]: !prevStatus[articleId],
+        }));
+    };
     return (
         <View>
             <View style={tw`flex-row pt-12 bg-[#D5ECF4]`}>
                 <View style={tw`w-1/2 px-5 gap-3 py-2`}>
                     <View>
-                        <Image
+                        {/* <Image
                             source={require('@/assets/images/home_profile.png')}
-                        />
+                        /> */}
                     </View>
                     <View>
                         <Text style={tw`font-semibold text-xl`}>Welcome!</Text>
-                        <Text style={tw`text-xl text-gray-700 mb-2`}>{name}</Text>
+                        <Text style={tw`text-xl text-gray-700 mb-2`}>Elissa</Text>
                         <Text style={tw`text-gray-400`}>How is it going today?</Text>
                     </View>
                 </View>
@@ -115,7 +123,7 @@ const landingPage = () => {
             </View>
             <View style={tw`w-full rounded-full items-center `}>
                 <View style={tw`items-center my-8 gap-7`}>
-                    <View style={tw`w-4/5 flex-row items-center border border-gray-300 rounded-full p-2`}>
+                    {/* <View style={tw`w-4/5 flex-row items-center border border-gray-300 rounded-full p-2`}>
                         <Feather name="search" size={24} color="gray" style={tw`mr-2`} />
                         <TextInput
                             style={tw`flex-1 h-6 px-4`}
@@ -123,7 +131,7 @@ const landingPage = () => {
                             onChangeText={text => setSearchQuery(text)}
                             value={searchQuery}
                         />
-                    </View>
+                    </View> */}
                     <View style={tw`flex flex-row px-10 gap-5`}>
                         <View style={tw`items-center`}>
                             <TouchableOpacity style={tw`h-10 w-10 bg-blue-600 rounded-full items-center justify-center`}>
@@ -149,18 +157,18 @@ const landingPage = () => {
                     </View>
                 </View>
                 <View style={tw`px-6`}>
-                    <View style={tw`flex-row justify-between my-2 `}>
+                    <View style={tw`flex-row justify-between my-2`}>
                         <Text style={tw`font-bold text-xl`}>Health article</Text>
                         <TouchableOpacity>
                             <Text style={tw`text-blue-600 items-center justify-center`}>See all</Text>
                         </TouchableOpacity>
                     </View>
-                    <ScrollView>
-                        <SafeAreaView style={tw`flex-grow gap-2`}>
+                    <SafeAreaView>
+                        <ScrollView style={tw`h-28`} showsVerticalScrollIndicator={false}>
                             {articles.map((article) => (
                                 <View
                                     key={article.id}
-                                    style={tw`h-18 flex-row p-1 gap-3 border border-gray-400 rounded-md`}
+                                    style={tw`h-18 my-1 flex-row p-1 gap-3 border border-gray-400 rounded-md`}
                                 >
                                     <View>
                                         <Image
@@ -175,14 +183,15 @@ const landingPage = () => {
                                             </View>
                                             <View style={tw``}>
                                                 <TouchableOpacity
-                                                    onPress={handleBookmarks}
+                                                    onPress={() => handleBookmarks(article.id)}
                                                 >
                                                     <FontAwesome
-                                                        name={isBookmarked ? 'bookmark' : 'bookmark-o'}
+                                                        name={bookmarkStatus[article.id] ? 'bookmark' : 'bookmark-o'} // Use bookmarkStatus state for each article
                                                         size={16}
                                                         color='blue'
                                                     />
                                                 </TouchableOpacity>
+
                                             </View>
                                         </View>
                                         <View style={tw`flex-row gap-4`}>
@@ -192,8 +201,8 @@ const landingPage = () => {
                                     </View>
                                 </View>
                             ))}
-                        </SafeAreaView>
-                    </ScrollView>
+                        </ScrollView>
+                    </SafeAreaView>
                 </View>
             </View>
         </View>

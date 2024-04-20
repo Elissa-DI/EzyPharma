@@ -1,8 +1,9 @@
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { Link, router } from 'expo-router';
+import { Link, router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
+import { useRoute } from '@react-navigation/native';
 
 const MedicineDetails = () => {
     const [favorites, setFavorites] = useState([]);
@@ -16,6 +17,10 @@ const MedicineDetails = () => {
         addedOnCart: false,
         description: 'OBH COMBI  is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing'
     });
+
+    const route = useRoute(); // Use useRoute hook to access route object
+    const params = useLocalSearchParams();
+    const { image, name, capacity, price, addedOnCart } = params;
 
     const toggleFavorite = () => {
         setMedicine(prevMedicine => ({

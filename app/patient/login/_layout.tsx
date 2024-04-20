@@ -16,6 +16,7 @@ import tw from 'twrnc'
 import axios from "axios";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ActivityIndicator } from "react-native";
 
 const PatientLogin = () => {
   const nav = useNavigation();
@@ -24,11 +25,13 @@ const PatientLogin = () => {
   const [phone, setPhone] = useState<string>('');
   const [phoneOrEmail, setPhoneOrEmail] = useState("email");
   const [isShowm, setIsShowm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toast = useToast();
 
 
   const handlePatientLogin = async () => {
+    setIsSubmitting(true);
     try {
       const response = await axios.post('https://ezypharma-backend.onrender.com/auth/login', {
         email,
@@ -42,6 +45,8 @@ const PatientLogin = () => {
       }
     } catch (error) {
       toast.show('An error occurred. Please try again');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -161,11 +166,22 @@ const PatientLogin = () => {
           <Text style={{ color: "blue" }}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.sign}
         onPress={handlePatientLogin}
       >
         <Text style={{ color: "white", fontSize: 18 }}>Login</Text>
+      </TouchableOpacity> */}
+      <TouchableOpacity
+        style={[styles.sign, isSubmitting && styles.disabled]} // Apply disabled style if submitting
+        onPress={handlePatientLogin}
+        disabled={isSubmitting} // Disable button while submitting
+      >
+        {isSubmitting ? (
+          <ActivityIndicator size="small" color="#fff" /> // Show activity indicator while submitting
+        ) : (
+          <Text style={{ color: "white", fontSize: 18 }}>Login</Text>
+        )}
       </TouchableOpacity>
       <View style={styles.already}>
         <Text style={{ fontSize: 16 }}>
@@ -173,7 +189,7 @@ const PatientLogin = () => {
           <TouchableOpacity
             onPress={redirectSignUp}
           >
-            <Text style={[{ color: "blue" }, tw`mt-3`]} >Sign up</Text>
+            <Text style={[{ color: "blue" }, tw`mt-3 text-center`]} >Sign up</Text>
           </TouchableOpacity>
         </Text>
       </View>
@@ -339,7 +355,10 @@ const styles = StyleSheet.create({
   },
   orText: {
     fontWeight: 'bold'
-  }
+  },
+  disabled: {
+    opacity: 0.5, // Reduce opacity for disabled state
+  },
 });
 
 export default PatientLogin

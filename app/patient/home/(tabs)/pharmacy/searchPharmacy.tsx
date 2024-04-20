@@ -23,10 +23,12 @@ interface Pharmacy {
 const SearchPharmacy = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [userLocation, setUserLocation] = useState<any>(null);
-    const [selectedPharmacy, setSelectedPharmacy] = useState<Pharmacy[] | null>(null);
+    const [selectedPharmacy, setSelectedPharmacy] = useState<Pharmacy[]>([]);
     const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
     const navigation = useNavigation();
     const router = useRouter();
+    const [coords, setCoords] = useState([]);
+
 
     useEffect(() => {
         getUserLocation();
@@ -45,35 +47,6 @@ const SearchPharmacy = () => {
         console.log(currentLocation.coords);
 
     };
-
-    // const fetchPharmacies = async () => {
-    //     try {
-    //         const response = await axios.get('https://ezypharma-backend.onrender.com/pharmacy/');
-    //         if (response.status === 200) {
-    //             setPharmaciess(response.data);
-    //             console.log("Fetched Pharmacies:", response.data);
-    //         }
-    //     } catch (error) {
-    //         console.log('Error fetching pharmacies:', error);
-    //     }
-    // }; 
-    // const fetchPharmacies = async () => {
-    //     try {
-    //       // Retrieve access token from AsyncStorage
-    //       const access_token = await AsyncStorage.getItem('access_token');
-    //       const response = await axios.get('https://ezypharma-backend.onrender.com/pharmacy/', {
-    //         headers: {
-    //           Authorization: `Bearer ${access_token}`
-    //         }
-    //       });
-    //       if (response.status === 200) {
-    //         setPharmaciess(response.data);
-    //         console.log("Fetched Pharmacies:", response.data);
-    //       }
-    //     } catch (error) {
-    //       console.log('Error fetching pharmacies:', error);
-    //     }
-    //   };  
     const fetchPharmacies = async () => {
         try {
             // Retrieve access token from AsyncStorage
@@ -87,7 +60,7 @@ const SearchPharmacy = () => {
                 console.log(response.data)
                 // Map the response data to match the expected structure
                 const mappedData: Pharmacy[] = response.data.map((pharmacy: any) => ({
-                    id: pharmacy._id, // Assuming the API provides an ID for each pharmacy
+                    id: pharmacy.id, // Assuming the API provides an ID for each pharmacy
                     name: pharmacy.name,
                     address: {
                         latitude: pharmacy.lat,
@@ -139,9 +112,9 @@ const SearchPharmacy = () => {
     const handlePress = (pharmacyId: string, pharmacyName: string) => {
         const pharmacy = pharmacies.find((pharmacy) => pharmacy.id === pharmacyId);
         if (pharmacy) {
-            const url = `/patient/home/(pharmacy)/${pharmacy.id}?id=${pharmacyId}&name=${encodeURIComponent(pharmacyName)}`;
+            const url = `/patient/home/(pharmacy)/${pharmacy.id}?name=${encodeURIComponent(pharmacyName)}`;
             router.navigate(url);
-            setSelectedPharmacy(pharmacy);
+            // setSelectedPharmacy(pharmacy);
         }
     }
 
@@ -156,20 +129,20 @@ const SearchPharmacy = () => {
                         provider={PROVIDER_GOOGLE}
                         style={styles.map}
                         initialRegion={{
-                            // latitude: userLocation.latitude,
-                            // longitude: userLocation.longitude,
-                            latitude: -1.5976637,
-                            longitude: 30.0535555,
+                            latitude: userLocation.latitude,
+                            longitude: userLocation.longitude,
+                            // latitude: -1.5976637,
+                            // longitude: 30.0535555,
                             latitudeDelta: 0.015,
                             longitudeDelta: 0.0121,
                         }}
                     >
                         <Marker
                             coordinate={{
-                                //  latitude: userLocation.latitude,
-                                // longitude: userLocation.longitude,
-                                latitude: -1.5986637,
-                                longitude: 30.0512555,
+                                latitude: userLocation.latitude,
+                                longitude: userLocation.longitude,
+                                // latitude: -1.6006856,
+                                // longitude: 30.0512555,
                             }}
                             title="Your Location"
                         />
@@ -193,6 +166,18 @@ const SearchPharmacy = () => {
                             </Marker>
                         ))}
                         {/* {selectedPharmacy && (
+                            // <Polyline
+                            //     coordinates={[
+                            //         {
+                            //             latitude: userLocation.latitude, longitude: userLocation.longitude
+                            //             // latitude: -1.5986637,
+                            //             // longitude: 30.0512555,
+                            //         },
+                            //         { latitude: selectedPharmacy.latitude, longitude: selectedPharmacy.address.longitude }
+                            //     ]}
+                            //     strokeColor="#FF0000" // Change this to customize the polyline color
+                            //     strokeWidth={2}
+                            // />
                             <Polyline
                                 coordinates={[
                                     {
@@ -200,12 +185,31 @@ const SearchPharmacy = () => {
                                         latitude: -1.5986637,
                                         longitude: 30.0512555,
                                     },
-                                    { latitude: selectedPharmacy.address.latitude, longitude: selectedPharmacy.address.longitude }
+                                    { latitude: selectedPharmacy[0].address.latitude, longitude: selectedPharmacy[0].address.longitude }
                                 ]}
                                 strokeColor="#FF0000" // Change this to customize the polyline color
                                 strokeWidth={2}
                             />
                         )} */}
+                        {selectedPharmacy && selectedPharmacy.length > 0 && (
+                            <Polyline
+                                coordinates={[
+                                    {
+                                        // latitude: -1.5986637,
+                                        // longitude: 30.0512555,
+                                        latitude: userLocation.latitude,
+                                        longitude: userLocation.longitude,
+                                    },
+                                    {
+                                        latitude: selectedPharmacy[0].address.latitude,
+                                        longitude: selectedPharmacy[0].address.longitude
+                                    }
+                                ]}
+                                strokeColor="#FF0000"
+                                strokeWidth={2}
+                            />
+                        )}
+
                     </MapView>
                 )}
             </View>

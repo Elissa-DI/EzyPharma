@@ -1,10 +1,11 @@
-import { View, Text, TextInput, TouchableOpacity, Image, Alert, Modal, ScrollView } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Image, Alert, Modal, ScrollView, FlatList } from 'react-native'
 import React, { useState } from 'react'
 import { Link, router, useLocalSearchParams } from 'expo-router'
 import { Feather, FontAwesome } from '@expo/vector-icons'
 import tw from 'twrnc'
 import { useRoute } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker';
+import { Toast, useToast } from 'react-native-toast-notifications';
 
 interface Medicine {
     image: string;
@@ -21,6 +22,8 @@ const PharmacyDetails = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [prescriptionImage, setPrescriptionImage] = useState<string | null>(null);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+    const toast = useToast();
 
     const chooseImageFromLibrary = async () => {
         try {
@@ -47,22 +50,60 @@ const PharmacyDetails = () => {
 
     const populars: Medicine[] = [
         {
-            image: '',
+            image: 'https://p7.hiclipart.com/preview/240/444/931/acetaminophen-fever-oral-administration-pharmacy-child-child.jpg',
+            name: 'Paracetamol',
+            capacity: '40pcs',
+            price: '$5.09',
+            addedOnCart: false
+        },
+        {
+            image: 'https://p7.hiclipart.com/preview/240/444/931/acetaminophen-fever-oral-administration-pharmacy-child-child.jpg',
             name: 'Panadol',
+            capacity: '18pcs',
+            price: '$11.00',
+            addedOnCart: false
+        },
+        {
+            image: 'https://p7.hiclipart.com/preview/240/444/931/acetaminophen-fever-oral-administration-pharmacy-child-child.jpg',
+            name: 'Amoxixillin',
+            capacity: '30pcs',
+            price: '$7.49',
+            addedOnCart: false
+        },
+        {
+            image: 'https://p7.hiclipart.com/preview/240/444/931/acetaminophen-fever-oral-administration-pharmacy-child-child.jpg',
+            name: 'Ibuprofen',
             capacity: '20pcs',
             price: '$15.09',
             addedOnCart: false
         },
+    ]
+
+    const popularss: Medicine[] = [
         {
-            image: '',
-            name: 'Panadol',
-            capacity: '20pcs',
-            price: '$15.09',
+            image: 'https://p7.hiclipart.com/preview/240/444/931/acetaminophen-fever-oral-administration-pharmacy-child-child.jpg',
+            name: 'Paracetamol',
+            capacity: '40pcs',
+            price: '$5.09',
             addedOnCart: false
         },
         {
-            image: '',
+            image: 'https://p7.hiclipart.com/preview/240/444/931/acetaminophen-fever-oral-administration-pharmacy-child-child.jpg',
             name: 'Panadol',
+            capacity: '18pcs',
+            price: '$11.00',
+            addedOnCart: false
+        },
+        {
+            image: 'https://p7.hiclipart.com/preview/240/444/931/acetaminophen-fever-oral-administration-pharmacy-child-child.jpg',
+            name: 'Amoxixillin',
+            capacity: '30pcs',
+            price: '$7.49',
+            addedOnCart: false
+        },
+        {
+            image: 'https://p7.hiclipart.com/preview/240/444/931/acetaminophen-fever-oral-administration-pharmacy-child-child.jpg',
+            name: 'Ibuprofen',
             capacity: '20pcs',
             price: '$15.09',
             addedOnCart: false
@@ -71,7 +112,15 @@ const PharmacyDetails = () => {
 
     const productsOnSale = [
         {
-            image: '',
+            image: 'https://p7.hiclipart.com/preview/240/444/931/acetaminophen-fever-oral-administration-pharmacy-child-child.jpg',
+            name: 'Nanadol',
+            capacity: '20pcs',
+            initialPrice: '$15.09',
+            currentPrice: '$10.04',
+            addedOnCart: false
+        },
+        {
+            image: 'https://p7.hiclipart.com/preview/240/444/931/acetaminophen-fever-oral-administration-pharmacy-child-child.jpg',
             name: 'Panadol',
             capacity: '20pcs',
             initialPrice: '$15.09',
@@ -79,16 +128,8 @@ const PharmacyDetails = () => {
             addedOnCart: false
         },
         {
-            image: '',
-            name: 'Panadol',
-            capacity: '20pcs',
-            initialPrice: '$15.09',
-            currentPrice: '$10.04',
-            addedOnCart: false
-        },
-        {
-            image: '',
-            name: 'Panadol',
+            image: 'https://p7.hiclipart.com/preview/240/444/931/acetaminophen-fever-oral-administration-pharmacy-child-child.jpg',
+            name: 'Paracetamol',
             capacity: '20pcs',
             initialPrice: '$15.09',
             currentPrice: '$10.04',
@@ -107,8 +148,40 @@ const PharmacyDetails = () => {
         router.navigate('patient/home/(pharmacy)/medicineDetails');
         // router.push({ pathname: "/patient/home/(pharmacy)/medicineDetails", params: { image, name, capacity, price, addedOnCart } });
     };
+
+    //Searching
+    const [filteredMedicine, setFilteredMedicine] = useState<Medicine[]>(populars);
+    const allMedicine: Medicine[] = [...populars, ...popularss, ...productsOnSale];
+
+    const filterMedicine = (query: string) => {
+        const filtered = allMedicine.filter(medicine =>
+            medicine.name.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredMedicine(filtered);
+    };
+
+    // const filterMedicine = (query: string) => {
+    //     const filtered = populars.filter(medicine =>
+    //         medicine.name.toLowerCase().includes(query.toLowerCase())
+    //     );
+    //     setFilteredMedicine(filtered);
+    // };
+
+    const handleSearchChange = (text: string) => {
+        setSearchQuery(text);
+        filterMedicine(text);
+    };
+
+    const handleAddToCart = () => {
+        try {
+            toast.show('Added to cart');
+            console.log('Added to cart');
+        } catch (error) {
+            console.error('Error showing toast:', error);
+        }
+    };
     
-    
+
     return (
         <View style={tw``}>
             <View style={tw`w-full flex-row items-center gap-10 mt-10 py-4 px-4`}>
@@ -128,7 +201,7 @@ const PharmacyDetails = () => {
                         <TextInput
                             style={tw`flex-1 h-6 px-4`}
                             placeholder="Search drugs ..."
-                            onChangeText={text => setSearchQuery(text)}
+                            onChangeText={handleSearchChange}
                             value={searchQuery}
                         />
                     </View>
@@ -159,12 +232,45 @@ const PharmacyDetails = () => {
                             <Text style={tw`font-semibold text-blue-600`}>See all</Text>
                         </TouchableOpacity>
                     </View>
+                    {/* <FlatList
+                    data={filteredMedicine} // Use your filtered data here
+                    numColumns={2} // Render two columns
+                    // horizontal={true}
+                    scrollEnabled={true}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            style={tw`border border-gray-300 rounded-xl py-2 px-3 gap-2 mr-3`}
+                            onPress={handleMedicinePress}
+                        >
+                            <View>
+                                <Image
+                                    source={require('@/assets/images/pop.png')}
+                                    style={tw`w-28 h-20`}
+                                />
+                            </View>
+                            <View>
+                                <View>
+                                    <Text style={tw`font-bold`}>{item.name}</Text>
+                                    <Text style={tw`font-bold text-gray-500`}>{item.capacity}</Text>
+                                </View>
+                                <View style={tw`flex-row justify-between mt-2`}>
+                                    <Text style={tw`font-black`}>{item.price}</Text>
+                                    <TouchableOpacity style={tw`bg-blue-500 p-1 rounded`}>
+                                        <FontAwesome name='plus' color='white' />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                /> */}
                     <ScrollView
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         style={tw`pl-1`}
                     >
-                        {populars.map((popular, index) => (
+                        {/* {populars.map((popular, index) => ( */}
+                        {filteredMedicine.map((popular, index) => (
                             <TouchableOpacity
                                 key={index}
                                 style={tw`border border-gray-300 rounded-xl py-2 px-3 gap-2 mr-3`}
@@ -173,7 +279,9 @@ const PharmacyDetails = () => {
                                 <View>
                                     <Image
                                         source={require('@/assets/images/pop.png')}
+                                        // source={{ uri: popular.image }}
                                         style={tw`w-28 h-20`}
+                                        onError={(error) => console.log('Image loading error:', error)}
                                     />
                                 </View>
                                 <View>
@@ -193,6 +301,48 @@ const PharmacyDetails = () => {
                     </ScrollView>
 
                     <ScrollView
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        style={tw`pl-1 mt-2`}
+                    >
+                        {/* {populars.map((popular, index) => ( */}
+                        {filteredMedicine.map((popular, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={tw`border border-gray-300 rounded-xl py-2 px-3 gap-2 mr-3`}
+                                onPress={handleMedicinePress}
+                            >
+                                <View>
+                                    <Image
+                                        source={require('@/assets/images/pop.png')}
+                                        style={tw`w-28 h-20`}
+                                    />
+                                </View>
+                                <View>
+                                    <View>
+                                        <Text style={tw`font-bold`}>{popular.name}</Text>
+                                        <Text style={tw`font-bold text-gray-500`}>{popular.capacity}</Text>
+                                    </View>
+                                    <View style={tw`flex-row justify-between mt-2`}>
+                                        <Text style={tw`font-black`}>{popular.price}</Text>
+                                        <TouchableOpacity
+                                            style={tw`bg-blue-500 p-1 rounded`}
+                                        // onPress={() => {
+                                        //     toast.show('Added to cart');
+                                        //     console.log('Added to cart');
+
+                                        // }}
+                                        onPress={handleAddToCart}
+                                        >
+                                            <FontAwesome name='plus' color='white' />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+
+                    {/* <ScrollView
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         style={tw`pl-1 mt-4`}
@@ -223,7 +373,7 @@ const PharmacyDetails = () => {
                                 </View>
                             </View>
                         ))}
-                    </ScrollView>
+                    </ScrollView> */}
                 </View>
             </View>
             <Modal
