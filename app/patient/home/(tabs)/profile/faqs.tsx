@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import { Link } from 'expo-router'
 import { FontAwesome } from '@expo/vector-icons'
 import tw from 'twrnc'
-// import { AccordionList } from 'react-native-accordion-list-view';
 import { AccordionList } from 'react-native-accordion-list-view';
 
 const FAQs = () => {
@@ -51,8 +50,7 @@ const FAQs = () => {
           customTitle={item => <Text style={tw`font-semibold`}>{item.question}</Text>}
           customBody={item => <Text>{item.answer}</Text>}
           animationDuration={400}
-          expandMultiple={false}
-          
+          expandMultiple={false}          
         />
       </View>
     </View>

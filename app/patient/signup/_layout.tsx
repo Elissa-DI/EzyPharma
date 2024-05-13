@@ -1,27 +1,17 @@
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import {
-    Text,
-    View,
-    StyleSheet,
-    TextInput,
-    TouchableOpacity,
-    Alert,
-    ActivityIndicator,
-} from "react-native";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
 import Checkbox from "expo-checkbox";
-import { Link, router } from "expo-router";
-import tw from "twrnc";
+import { router } from "expo-router";
 import Modal from "react-native-modal";
-
 import axios from 'axios'
 import { useToast } from "react-native-toast-notifications";
+import tw from "twrnc";
+
 
 const PatientSignup = () => {
-    const nav = useNavigation();
-    const [isFocused, setIsFocused] = useState(false);
     const [name, setName] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -31,7 +21,6 @@ const PatientSignup = () => {
     const [terms, setTerms] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-
     const toast = useToast();
 
     const handleSignup = async () => {
@@ -57,15 +46,10 @@ const PatientSignup = () => {
                 toast.show('You have been registered successfully!');
             }
         } catch (error) {
-            // if (error.response && error.response.status === 422) {
-            //     toast.show('Please check your inputs and try again.');
-            // } else {
-            //     toast.show('An error occurred. Please try again later.');
-            // }
             toast.show('An error occurred. Please try again later.');
             console.log(error);
         } finally {
-            setIsSubmitting(false); // Set isSubmitting back to false after submission
+            setIsSubmitting(false);
         }
     }
     const handleLogin = () => {
@@ -116,7 +100,6 @@ const PatientSignup = () => {
                     <TextInput
                         placeholder="Enter your name"
                         value={name}
-                        // onChangeText={(text) => setName(text)}
                         style={styles.textInput}
                         onChangeText={setName}
                     />
@@ -177,7 +160,6 @@ const PatientSignup = () => {
                             placeholder="Enter your email"
                             value={email}
                             onChangeText={setEmail}
-                            // onChangeText={(email) => setEmail(email)}
                             style={styles.textInput}
                         />
                     </View>
@@ -188,7 +170,6 @@ const PatientSignup = () => {
                             placeholder="Enter your phone"
                             value={phone}
                             onChangeText={setPhone}
-                            // onChangeText={(phone) => setPhone(phone)}
                             style={styles.textInput}
                         />
                     </View>
@@ -199,7 +180,6 @@ const PatientSignup = () => {
                         placeholder="Enter your password"
                         value={password}
                         onChangeText={setPassword}
-                        // onChangeText={(password) => setPassword(password)}
                         secureTextEntry={isShowm ? false : true}
                         style={styles.passInput}
                     />
@@ -233,10 +213,10 @@ const PatientSignup = () => {
             <TouchableOpacity
                 style={[styles.sign, !terms && { backgroundColor: 'lightgray' }]}
                 onPress={handleSignup}
-                disabled={!terms || isSubmitting} // Disable button while submitting or if terms are not agreed
+                disabled={!terms || isSubmitting}
             >
                 {isSubmitting ? (
-                    <ActivityIndicator size="small" color="#fff" /> // Show activity indicator while submitting
+                    <ActivityIndicator size="small" color="#fff" />
                 ) : (
                     <Text style={{ color: "white", fontSize: 18 }}>Sign Up</Text>
                 )}

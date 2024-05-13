@@ -1,11 +1,10 @@
-import { View, Text, Image, ScrollView } from 'react-native'
 import React from 'react'
+import { View, Text, Image, ScrollView } from 'react-native'
 import { Link } from 'expo-router'
 import { FontAwesome } from '@expo/vector-icons'
 import tw from 'twrnc'
 
 import iconImage from '@/assets/images/icon.png';
-import GetLocation from '@/components/getLocation'
 
 const NotificationPage = () => {
   const notifications = [

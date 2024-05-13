@@ -1,8 +1,7 @@
 import React from 'react'
 import { Tabs } from 'expo-router'
 import Colors from '@/constants/Colors'
-import { FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
-import { Image } from 'react-native';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons'
 
 const TabsLayout = () => {
   return (
@@ -22,7 +21,6 @@ const TabsLayout = () => {
         options={{
           tabBarLabel: 'Pharmacy',
           tabBarIcon: ({ color, size }) => <Ionicons name="search" color={color} size={size} />,
-          // tabBarIcon: () => <Image source={require('@/assets/icons/pill.svg')} width={18} height={18} />,
           headerShown: false,
         }}
       />

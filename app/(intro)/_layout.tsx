@@ -1,23 +1,20 @@
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { useEffect, useState } from 'react';
 import AppIntroSlider from 'react-native-app-intro-slider';
-
-import Dimension from '@/constants/Dimension';
-import Colors from '@/constants/Colors';
-
-import { styles } from '@/constants/styles/intro';
-import { Link, router } from 'expo-router';
-import React from 'react';
-import tw from "twrnc";
+import { router } from 'expo-router';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { BackHandler } from 'react-native';
+
+import tw from "twrnc";
+import { styles } from '@/constants/styles/intro';
+import Colors from '@/constants/Colors';
 
 const Layout = () => {
   const [show, setShow] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
 
   const handleDone = () => {
-    setShow(true); // Set show state to true when "Done" button is clicked
+    setShow(true);
   };
 
   const buttonLabel = (label: string) => {
@@ -33,7 +30,6 @@ const Layout = () => {
   };
 
   const handleLoginContinue = () => {
-    console.log("Selected option:", selectedOption);
     if (selectedOption === 'patient') {
       router.navigate('/patient/login');
     } else if (selectedOption === 'pharmacy') {
@@ -41,12 +37,11 @@ const Layout = () => {
     } else if (selectedOption === 'hospital') {
       router.navigate('/hospital/login');
     } else {
-      router.navigate('/error');
+      return;
     }
   };
 
   const handleSignupContinue = () => {
-    console.log("Selected option for signup:", selectedOption);
     if (selectedOption === 'patient') {
       router.navigate('/patient/signup');
     } else if (selectedOption === 'pharmacy') {
@@ -54,7 +49,7 @@ const Layout = () => {
     } else if (selectedOption === 'hospital') {
       router.navigate('/hospital/signup');
     } else {
-      router.navigate('/error');
+      return;
     }
   }
 
@@ -66,9 +61,7 @@ const Layout = () => {
       }
       return false;
     };
-
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-    
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
@@ -122,9 +115,6 @@ const Layout = () => {
               <Text style={tw`ml-8 text-gray-600 font-semibold`}>Pharmacy</Text>
             </TouchableOpacity>
           </View>
-          {/* <TouchableOpacity onPress={handleContinue} style={{ backgroundColor: 'blue', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 5, marginTop: 20 }}>
-            <Text style={{ color: 'white' }}>Continue</Text>
-          </TouchableOpacity> */}
         </View>
       )
     }
@@ -170,17 +160,7 @@ const Layout = () => {
         }}
         renderSkipButton={() => buttonLabel('Skip')}
         renderDoneButton={() => {
-          // return (
-          //   <View style={tw`bg-blue-600 p-3 rounded-full`}>
-          //     <Ionicons
-          //       name='checkmark'
-          //       color="white"
-          //       size={20}
-          //     />
-          //   </View>
-          // );
           if (selectedOption !== '') {
-            // If an option is selected, render the "Done" button
             return (
               <TouchableOpacity
                 onPress={handleDone}
@@ -194,7 +174,6 @@ const Layout = () => {
               </TouchableOpacity>
             );
           } else {
-            // If no option is selected, return null to hide the "Done" button
             return null;
           }
         }}
@@ -203,7 +182,7 @@ const Layout = () => {
     );
   }
 
- 
+
 
   return (
     <View style={tw`w-full px-5`}>

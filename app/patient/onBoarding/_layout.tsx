@@ -1,13 +1,11 @@
-
 import { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from expo/vector-icons
+import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { patient } from '@/constants/styles/patient';
 import { router } from 'expo-router';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
-import { SIZES } from '@/constants/styles/style';
 
 const PatientOnboard = () => {
     const [selectedButton, setSelectedButton] = useState('');
@@ -19,12 +17,10 @@ const PatientOnboard = () => {
     const handleSignup = () => {
         setSelectedButton('signup')
         router.navigate('patient/signup')
-        console.log("Signup is clicked!");
     }
     const handleLogin = () => {
         setSelectedButton('login')
         router.navigate('patient/login')
-        console.log("Login is clicked!");
     }
 
     return (

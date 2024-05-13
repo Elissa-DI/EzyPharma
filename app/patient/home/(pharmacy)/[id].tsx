@@ -1,11 +1,11 @@
-import { View, Text, TextInput, TouchableOpacity, Image, Alert, Modal, ScrollView, FlatList } from 'react-native'
 import React, { useState } from 'react'
+import { View, Text, TextInput, TouchableOpacity, Image, Modal, ScrollView } from 'react-native'
 import { Link, router, useLocalSearchParams } from 'expo-router'
 import { Feather, FontAwesome } from '@expo/vector-icons'
 import tw from 'twrnc'
 import { useRoute } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker';
-import { Toast, useToast } from 'react-native-toast-notifications';
+import { useToast } from 'react-native-toast-notifications';
 
 interface Medicine {
     image: string;

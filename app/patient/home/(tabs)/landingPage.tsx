@@ -1,9 +1,7 @@
-import { ScrollView, View, Text, Image, TextInput, TouchableOpacity, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import { ScrollView, View, Text, Image, TextInput, TouchableOpacity, Dimensions } from 'react-native'
 import tw from 'twrnc'
 import { Feather, FontAwesome } from '@expo/vector-icons';
-
-//Images
 import article1 from '@/assets/images/article1.png';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,7 +9,6 @@ import axios from 'axios';
 const { height } = Dimensions.get('window');
 
 const landingPage = () => {
-    // const name = 'Ruchita';
     const [name, setName] = useState<string>('');
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
@@ -68,16 +65,13 @@ const landingPage = () => {
             timeRead: 5
         }
     ]
-    // const handleBookmarks = () => {
-    //     setIsBookmarked(!isBookmarked)
-    // }
 
     const handleRedirectPharmacy = () => {
         router.navigate('/patient/home/(tabs)/pharmacy/searchPharmacy')
     }
 
     useEffect(() => {
-        fetchUserName(); // Fetch the user's name when the component mounts
+        fetchUserName();
     }, []);
 
 
@@ -123,7 +117,7 @@ const landingPage = () => {
             </View>
             <View style={tw`w-full rounded-full items-center `}>
                 <View style={tw`items-center my-8 gap-7`}>
-                    {/* <View style={tw`w-4/5 flex-row items-center border border-gray-300 rounded-full p-2`}>
+                    <View style={tw`w-4/5 flex-row items-center border border-gray-300 rounded-full p-2`}>
                         <Feather name="search" size={24} color="gray" style={tw`mr-2`} />
                         <TextInput
                             style={tw`flex-1 h-6 px-4`}
@@ -131,7 +125,7 @@ const landingPage = () => {
                             onChangeText={text => setSearchQuery(text)}
                             value={searchQuery}
                         />
-                    </View> */}
+                    </View>
                     <View style={tw`flex flex-row px-10 gap-5`}>
                         <View style={tw`items-center`}>
                             <TouchableOpacity style={tw`h-10 w-10 bg-blue-600 rounded-full items-center justify-center`}>

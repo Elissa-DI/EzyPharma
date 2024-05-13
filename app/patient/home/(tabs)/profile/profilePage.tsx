@@ -2,20 +2,14 @@ import { View, Text, Image, TouchableOpacity, Modal } from 'react-native'
 import React, { useState } from 'react'
 import tw from 'twrnc'
 import { router } from 'expo-router'
-import { Feather, Ionicons, FontAwesome } from '@expo/vector-icons'
+import { Feather,FontAwesome } from '@expo/vector-icons'
 
 const ProfilePage = () => {
+    const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+
     const handleForgot = () => {
         router.navigate('/patient/forgot')
     }
-
-    const [logoutModalVisible, setLogoutModalVisible] = useState(false);
-
-    const handleLogout = () => {
-        // Add your logout logic here
-        // For demonstration purposes, let's just close the modal
-        setLogoutModalVisible(false);
-    };
 
     const links = [
         {
@@ -43,6 +37,11 @@ const ProfilePage = () => {
             name: 'Logout',
         },
     ]
+
+    const handleLogout = () => {
+        setLogoutModalVisible(false);
+    };
+
     return (
         <View>
             <View style={tw`w-full items-center pt-14`}>

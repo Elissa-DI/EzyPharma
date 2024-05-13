@@ -1,34 +1,23 @@
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-
-} from "react-native";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
-import React, { useState } from "react";
-import Checkbox from "expo-checkbox";
 import { router } from "expo-router";
-import tw from 'twrnc'
 import axios from "axios";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator } from "react-native";
+import tw from 'twrnc'
 
 const PatientLogin = () => {
-  const nav = useNavigation();
   const [password, setPassword] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [phoneOrEmail, setPhoneOrEmail] = useState("email");
   const [isShowm, setIsShowm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const toast = useToast();
-
 
   const handlePatientLogin = async () => {
     setIsSubmitting(true);
@@ -48,6 +37,7 @@ const PatientLogin = () => {
     } finally {
       setIsSubmitting(false);
     }
+    // router.navigate('/patient/home');
   };
 
   const handleForgot = () => {
@@ -88,7 +78,6 @@ const PatientLogin = () => {
               Email
             </Text>
           </TouchableOpacity>
-
           <TouchableOpacity
             style={[
               styles.checkbox,
@@ -118,7 +107,6 @@ const PatientLogin = () => {
             <TextInput
               placeholder="Enter your email"
               value={email}
-              // onChange={setEmail}
               onChangeText={(email) => setEmail(email)}
               style={styles.textInput}
             />
@@ -129,7 +117,6 @@ const PatientLogin = () => {
             <TextInput
               placeholder="Enter your phone"
               value={phone}
-              // onChange={setPhone}
               onChangeText={(phone) => setPhone(phone)}
               style={styles.textInput}
             />
@@ -140,7 +127,6 @@ const PatientLogin = () => {
           <TextInput
             placeholder="Enter your password"
             value={password}
-            // onChange={setPassword}
             onChangeText={(password) => setPassword(password)}
             secureTextEntry={isShowm ? false : true}
             style={styles.passInput}
@@ -166,19 +152,13 @@ const PatientLogin = () => {
           <Text style={{ color: "blue" }}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
-      {/* <TouchableOpacity
-        style={styles.sign}
-        onPress={handlePatientLogin}
-      >
-        <Text style={{ color: "white", fontSize: 18 }}>Login</Text>
-      </TouchableOpacity> */}
       <TouchableOpacity
-        style={[styles.sign, isSubmitting && styles.disabled]} // Apply disabled style if submitting
+        style={[styles.sign, isSubmitting && styles.disabled]}
         onPress={handlePatientLogin}
-        disabled={isSubmitting} // Disable button while submitting
+        disabled={isSubmitting}
       >
         {isSubmitting ? (
-          <ActivityIndicator size="small" color="#fff" /> // Show activity indicator while submitting
+          <ActivityIndicator size="small" color="#fff" />
         ) : (
           <Text style={{ color: "white", fontSize: 18 }}>Login</Text>
         )}
@@ -309,16 +289,11 @@ const styles = StyleSheet.create({
     color: "blue",
   },
   forgot: {
-    // position: 'absolute',
-    // bottom: 305,
-    // right: 40
     alignSelf: "flex-end",
     right: 35,
     color: 'blue'
   },
   sign: {
-    // position: "absolute",
-    // bottom: 200,
     marginTop: 25,
     alignSelf: "center",
     width: "80%",
@@ -341,7 +316,6 @@ const styles = StyleSheet.create({
   },
   orBtn: {
     height: 45,
-    // backgroundColor: "rgba(222, 222, 222,0.5)",
     borderColor: "rgba(0,0,0,0.2)",
     borderWidth: 1,
     marginBottom: 25,
@@ -357,7 +331,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   disabled: {
-    opacity: 0.5, // Reduce opacity for disabled state
+    opacity: 0.5,
   },
 });
 

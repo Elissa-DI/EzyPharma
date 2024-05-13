@@ -23,7 +23,6 @@ const ResetPassword = () => {
 
     const renderModal = () => (
         <View style={tw`items-center bg-white p-5 rounded-lg`}>
-
             <View style={tw`bg-blue-100 p-6 rounded-full my-3`}>
                 <FontAwesome name="check" color='blue' size={25} />
             </View>

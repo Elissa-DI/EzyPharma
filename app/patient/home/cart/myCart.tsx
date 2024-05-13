@@ -1,7 +1,7 @@
-import { View, Text, Image, TouchableOpacity, Modal, TextInput, ScrollView } from 'react-native'
 import React, { useState } from 'react'
+import { View, Text, Image, TouchableOpacity, Modal, TextInput, ScrollView } from 'react-native'
 import { Link, router } from 'expo-router'
-import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons'
 import tw from 'twrnc'
 
 const MyCart = () => {
@@ -39,7 +39,7 @@ const MyCart = () => {
 
     const calculateTotal = () => {
         const subtotal = calculateSubtotal();
-        const taxes = 1.00; // You can change this value if needed
+        const taxes = 1.00;
         return subtotal + taxes;
     };
 
@@ -63,8 +63,8 @@ const MyCart = () => {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const handlePaymentSuccess = () => {
-        setShowPaymentModal(false); // Hide the Payment Modal
-        setShowSuccessModal(true); // Show the "Payment successfully made" modal
+        setShowPaymentModal(false);
+        setShowSuccessModal(true);
     };
     return (
         <View style={tw`px-5`}>
@@ -221,8 +221,7 @@ const MyCart = () => {
                             <TouchableOpacity
                                 style={tw`w-5/7 mt-5 items-center bg-blue-600 py-3 px-5 rounded-full`}
                                 onPress={() => {
-                                    router.navigate('/patient/home/(tabs)/pharmacy/searchPharmacy');
-                                    console.log('Its clicked')
+                                    router.navigate('/patient/home/cart/addLocation');
                                 }}
                             >
                                 <Text style={tw`text-white font-semibold`}>Confirm location</Text>
@@ -233,10 +232,6 @@ const MyCart = () => {
             </Modal>
             {/* Payment Modal */}
             <Modal
-                // visible={showPaymentModal}
-                // animationType='fade'
-                // transparent={true}
-                // onRequestClose={() => setShowPaymentModal(false)}
                 visible={showPaymentModal || showSuccessModal}
                 animationType='fade'
                 transparent={true}
@@ -289,8 +284,9 @@ const MyCart = () => {
                                 <Text style={tw`text-gray-400 w-44`}>Your payment has been successful, Subscribe to get additional services from us</Text>
                                 <TouchableOpacity style={tw`w-5/7 mt-5 items-center bg-blue-600 py-3 px-5 rounded-full`}
                                     onPress={() => {
+                                        router.navigate('/patient/')
                                     }}>
-                                    <Text style={tw`text-white font-semibold`}>Allow location</Text>
+                                    <Text style={tw`text-white font-semibold`}>Subscribe</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

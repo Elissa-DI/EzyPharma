@@ -1,10 +1,10 @@
-import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native'
 import React, { useState } from 'react'
-import tw from 'twrnc';
-import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
-import { router, Link, useRouter, Stack } from 'expo-router';
+import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native'
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
+import { router, Link } from 'expo-router';
 import { useToast } from "react-native-toast-notifications";
 import axios from 'axios';
+import tw from 'twrnc';
 
 const ForgotPassword = () => {
   const [password, setPassword] = useState<string>('');
@@ -12,15 +12,8 @@ const ForgotPassword = () => {
   const [phone, setPhone] = useState<string>('');
   const [phoneOrEmail, setPhoneOrEmail] = useState("email");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const toast = useToast();
-  // const handleForgotSubmit = () => {
-  //   setIsSubmitting(true);
-  //   setTimeout(() => {
-  //     setIsSubmitting(false);
-  //     router.navigate("/patient/forgot/reset")
-  //   }, 1500)
-  // }
+
   const handleForgotSubmit = async () => {
     setIsSubmitting(true);
     try {
@@ -28,17 +21,14 @@ const ForgotPassword = () => {
         email,
       });
       if (response.status === 200) {
-        // Handle successful submission
         console.log(response.data.message);
-        toast.show('Code successfully sent!'); // Message indicating confirmation code sent
+        toast.show('Code successfully sent!');
         router.navigate("/patient/forgot/reset");
       }
     } catch (error: any) {
       if (error.response && error.response.status === 422) {
-        console.log('Validation Error:', error.response.data.detail);
         toast.show('Validation error')
       } else {
-        // console.log('An error occurred. Please try again later.');
         toast.show('An error occurred. Please try again later.');
       }
     }
@@ -114,7 +104,6 @@ const ForgotPassword = () => {
         </View>
         {phoneOrEmail == "email" ? (
           <View
-            // style={styles.input}
             style={tw`h-16 bg-gray-200 border border-gray-500 border-opacity-20 border-1 mb-6 pl-4 w-5/6 flex flex-row items-center gap-4 rounded-lg`}
           >
             <Ionicons name="mail-outline" size={24} color={"gray"} />
@@ -122,13 +111,11 @@ const ForgotPassword = () => {
               placeholder="Enter your email"
               value={email}
               onChangeText={(email) => setEmail(email)}
-              // style={styles.textInput}
               style={tw`w-5/6 h-10 border-transparent focus:border-transparent px-4`}
             />
           </View>
         ) : (
           <View
-            // style={styles.input}
             style={tw`h-16 bg-gray-200 border border-gray-500 border-opacity-20 border-1 mb-6 pl-4 w-5/6 flex flex-row items-center gap-4 rounded-lg`}
           >
             <Ionicons name="call" size={24} color={"gray"} />
@@ -136,7 +123,6 @@ const ForgotPassword = () => {
               placeholder="Enter your phone"
               value={phone}
               onChangeText={(phone) => setPhone(phone)}
-              // style={styles.textInput}
               style={tw`w-5/6 h-10 border-transparent focus:border-transparent px-4`}
             />
           </View>

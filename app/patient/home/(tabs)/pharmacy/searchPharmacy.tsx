@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from 'react-native-maps';
-import tw from 'twrnc';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import CustomMarker from '@/components/customMarker';
-import { Link, router, useNavigation, useRouter } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import tw from 'twrnc';
 
 interface Pharmacy {
     id: string;
@@ -17,7 +17,6 @@ interface Pharmacy {
         longitude: number
     }
     rating: number;
-    // Add other attributes as needed
 }
 
 const SearchPharmacy = () => {
@@ -49,7 +48,6 @@ const SearchPharmacy = () => {
     };
     const fetchPharmacies = async () => {
         try {
-            // Retrieve access token from AsyncStorage
             const access_token = await AsyncStorage.getItem('access_token');
             const response = await axios.get('https://ezypharma-backend.onrender.com/pharmacy/', {
                 headers: {
@@ -58,9 +56,8 @@ const SearchPharmacy = () => {
             });
             if (response.status === 200) {
                 console.log(response.data)
-                // Map the response data to match the expected structure
                 const mappedData: Pharmacy[] = response.data.map((pharmacy: any) => ({
-                    id: pharmacy.id, // Assuming the API provides an ID for each pharmacy
+                    id: pharmacy.id,
                     name: pharmacy.name,
                     address: {
                         latitude: pharmacy.lat,
@@ -70,7 +67,6 @@ const SearchPharmacy = () => {
                     // Add other attributes if needed
                 }));
 
-                // Update state with mapped data
                 setPharmacies(mappedData);
                 console.log("Fetched Pharmacies:", mappedData);
             }
@@ -118,9 +114,6 @@ const SearchPharmacy = () => {
         }
     }
 
-    //This is for testing a polyline
-
-
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.container}>
@@ -149,48 +142,17 @@ const SearchPharmacy = () => {
                         {pharmacies.map((pharmacy, index) => (
                             <Marker
                                 key={index}
-                                // coordinate={{
-                                //     latitude: pharmacy.lat,
-                                //     longitude: pharmacy.long
-                                // }}
                                 coordinate={{
                                     latitude: pharmacy.address.latitude,
                                     longitude: pharmacy.address.longitude,
                                 }}
                                 title={pharmacy.name}
-                                // onPress={() => handlePharmacyRedirect(pharmacy.id, pharmacy.name)}
                                 onPress={() => handlePress(pharmacy.id, pharmacy.name)}
 
                             >
                                 <CustomMarker rating={pharmacy.rating} />
                             </Marker>
                         ))}
-                        {/* {selectedPharmacy && (
-                            // <Polyline
-                            //     coordinates={[
-                            //         {
-                            //             latitude: userLocation.latitude, longitude: userLocation.longitude
-                            //             // latitude: -1.5986637,
-                            //             // longitude: 30.0512555,
-                            //         },
-                            //         { latitude: selectedPharmacy.latitude, longitude: selectedPharmacy.address.longitude }
-                            //     ]}
-                            //     strokeColor="#FF0000" // Change this to customize the polyline color
-                            //     strokeWidth={2}
-                            // />
-                            <Polyline
-                                coordinates={[
-                                    {
-                                        //latitude: userLocation.latitude, longitude: userLocation.longitude
-                                        latitude: -1.5986637,
-                                        longitude: 30.0512555,
-                                    },
-                                    { latitude: selectedPharmacy[0].address.latitude, longitude: selectedPharmacy[0].address.longitude }
-                                ]}
-                                strokeColor="#FF0000" // Change this to customize the polyline color
-                                strokeWidth={2}
-                            />
-                        )} */}
                         {selectedPharmacy && selectedPharmacy.length > 0 && (
                             <Polyline
                                 coordinates={[
