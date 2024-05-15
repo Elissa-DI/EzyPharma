@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import {
   Text,
   View,
@@ -9,12 +8,10 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
 import React, { useState } from "react";
-import Checkbox from "expo-checkbox";
 import { router } from "expo-router";
 import tw from 'twrnc'
 
 const PatientLogin = () => {
-  const nav = useNavigation();
   const [password, setPassword] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
@@ -23,10 +20,10 @@ const PatientLogin = () => {
 
   //Functions
   const handleForgot = () => {
-    router.navigate('/patient/forgot')
+    router.navigate('/hospital/forgot')
   }
   const redirectSignUp = () => {
-    router.navigate('/patient/signup')
+    router.navigate('/hospital/signup')
   }
   return (
     <SafeAreaView style={{ height: "100%" }}>
@@ -141,7 +138,7 @@ const PatientLogin = () => {
       <TouchableOpacity
         style={styles.sign}
         onPress={() => {
-          router.navigate('/patient/home')
+          router.navigate('/hospital/home')
         }}
       >
         <Text style={{ color: "white", fontSize: 18 }}>Login</Text>

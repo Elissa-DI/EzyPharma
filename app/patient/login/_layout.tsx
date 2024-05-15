@@ -33,7 +33,7 @@ const PatientLogin = () => {
         toast.show('Successfully logged in!');
       }
     } catch (error) {
-      toast.show('An error occurred. Please try again');
+      toast.show('Incorrect email or password');
     } finally {
       setIsSubmitting(false);
     }

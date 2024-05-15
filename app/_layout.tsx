@@ -1,4 +1,3 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -54,7 +53,6 @@ function RootLayoutNav() {
         <Stack.Screen name="patient" options={{ headerShown: false }} />
         <Stack.Screen name="hospital" options={{ headerShown: false }} />
         <Stack.Screen name="pharmacy" options={{ headerShown: false }} />
-        
       </Stack>
     </ToastProvider>
   );

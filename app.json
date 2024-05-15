@@ -10,7 +10,8 @@
     "splash": {
       "image": "./assets/images/splash_screen.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "height": 800
     },
     "assetBundlePatterns": [
       "**/*"
@@ -19,7 +20,9 @@
       "supportsTablet": true
     },
     "android": {
-      "permissions": ["CAMERA_ROLL"],
+      "permissions": [
+        "CAMERA_ROLL"
+      ],
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
       }

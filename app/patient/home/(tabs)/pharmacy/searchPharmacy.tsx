@@ -108,7 +108,7 @@ const SearchPharmacy = () => {
     const handlePress = (pharmacyId: string, pharmacyName: string) => {
         const pharmacy = pharmacies.find((pharmacy) => pharmacy.id === pharmacyId);
         if (pharmacy) {
-            const url = `/patient/home/(pharmacy)/${pharmacy.id}?name=${encodeURIComponent(pharmacyName)}`;
+            const url = `/patient/home/(pharmacy)/${pharmacy.id}?name=${encodeURIComponent(pharmacyName)}&selectedPharmacy=${JSON.stringify(pharmacy)}`;
             router.navigate(url);
             // setSelectedPharmacy(pharmacy);
         }

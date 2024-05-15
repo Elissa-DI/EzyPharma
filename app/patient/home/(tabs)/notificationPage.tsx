@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, ScrollView } from 'react-native'
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
 import { Link } from 'expo-router'
 import { FontAwesome } from '@expo/vector-icons'
 import tw from 'twrnc'
@@ -81,7 +81,7 @@ const NotificationPage = () => {
         <ScrollView>
           <View style={tw`mt-10 gap-7`}>
             {notifications.map((notification, index) => (
-              <View key={index} style={tw`flex-row gap-3`}>
+              <TouchableOpacity key={index} style={tw`flex-row gap-3`}>
                 <View style={tw`w-18 h-18 justify-center rounded-full overflow-hidden border-2 border-blue-800`}>
                   <Image
                     source={notification.image}
@@ -101,7 +101,7 @@ const NotificationPage = () => {
                     </View>
                   )}
                 </View>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
         </ScrollView>

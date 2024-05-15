@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import {
     Text,
     View,
@@ -10,14 +9,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
 import React, { useState } from "react";
 import Checkbox from "expo-checkbox";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import tw from "twrnc";
 import Modal from "react-native-modal";
 
 
 const PatientSignup = () => {
-    const nav = useNavigation();
-    const [isFocused, setIsFocused] = useState(false);
     const [name, setName] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -31,8 +28,8 @@ const PatientSignup = () => {
         setIsModalVisible(true)
     }
     const handleLogin = () => {
-        router.navigate('/patient/login')
-      }
+        router.navigate('/hospital/login')
+    }
     const LocationModal = () => (
         <View style={tw`items-center bg-white p-5 rounded-lg`}>
             <View style={tw`w-full items-end`}>
@@ -51,7 +48,7 @@ const PatientSignup = () => {
                 <TouchableOpacity
                     style={tw`w-5/7 mt-5 items-center bg-blue-600 py-3 px-5 rounded-full`}
                     onPress={() => {
-                        router.navigate('/patient/login')
+                        router.navigate('/hospital/login')
                         console.log("Location enabled");
                     }}
                 >
@@ -72,7 +69,7 @@ const PatientSignup = () => {
                 <View style={styles.input}>
                     <Ionicons name="person-outline" size={24} color={"gray"}></Ionicons>
                     <TextInput
-                        placeholder="Enter your name"
+                        placeholder="Hospital name"
                         value={name}
                         onChangeText={(text) => setName(text)}
                         style={styles.textInput}
@@ -307,7 +304,7 @@ const styles = StyleSheet.create({
         color: "blue",
     },
     sign: {
-        marginTop: 110,
+        marginTop: 50,
         alignSelf: "center",
         width: "80%",
         backgroundColor: "#0c97fa",
