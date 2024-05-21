@@ -1,8 +1,19 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, ScrollView, Image, TouchableOpacity, Modal, TextInput } from 'react-native'
+import React, { useState } from 'react'
 import tw from 'twrnc';
 import { Link } from 'expo-router';
-import { FontAwesome } from '@expo/vector-icons';
+import { Feather, FontAwesome, Ionicons } from '@expo/vector-icons';
+
+interface Hospital {
+    name: string;
+    image: string;
+    rating: number;
+    reviews: number;
+    type: string;
+    location: string;
+    hours: string;
+    contact?: string;
+}
 
 const hospitals = [
     {
@@ -55,32 +66,116 @@ const hospitals = [
     },
 ];
 
+const categories = [
+    {
+        icon: 'yes',
+        name: 'General'
+    },
+    {
+        icon: 'yes',
+        name: 'General'
+    },
+    {
+        icon: 'yes',
+        name: 'General'
+    },
+    {
+        icon: 'yes',
+        name: 'General'
+    },
+    {
+        icon: 'yes',
+        name: 'General'
+    },
+    {
+        icon: 'yes',
+        name: 'General'
+    }, {
+        icon: 'yes',
+        name: 'General'
+    },
+]
+
 const AllHospitals = () => {
+    const [selectedHospital, setSelectedHospital] = useState<Hospital>();
+    const [searchQuery, setSearchQuery] = useState<string>('');
+    const [modalVisible, setModalVisible] = useState(false);
+
+
+    // Function to handle click event of a hospital item
+    const handleHospitalClick = (hospital: Hospital) => {
+        setSelectedHospital(hospital);
+        setModalVisible(true);
+    };
     return (
         <ScrollView style={tw`flex-1 bg-white`}>
             <View style={tw`p-4`}>
-                <TouchableOpacity style={tw`flex-row items-center gap-24 py-4 px-1`}>
-                    <Link href="../" style={tw``}>
-                        <FontAwesome name="chevron-left" size={18} />
-                    </Link>
+                <View style={tw`flex-row items-center gap-24 py-4 px-1`}>
+                    <TouchableOpacity>
+                        <Link href="../" style={tw``}>
+                            <FontAwesome name="chevron-left" size={18} />
+                        </Link>
+                    </TouchableOpacity>
                     <Text style={tw`text-2xl font-bold mb-4`}>Top Doctors</Text>
-                </TouchableOpacity>
+                </View>
                 {hospitals.map((hospital, index) => (
-                    <TouchableOpacity key={index} style={tw`bg-gray-100 p-3 rounded-lg mb-4 flex-row gap-2`}>
+                    <TouchableOpacity
+                        key={index}
+                        style={tw`bg-gray-100 p-3 rounded-lg mb-4 flex-row gap-2`}
+                        onPress={() => handleHospitalClick(hospital)}
+                    >
                         <View style={tw`bg-red-100 w-24 h-24 rounded-xl`}>
                             <Image source={hospital.image} style={tw`w-full h-full rounded-xl mb-4`} />
                         </View>
-                        <View>
-                            <Text style={tw`font-bold`}>{hospital.name}</Text>
-                            <Text style={tw`text-blue-700 mb-2`}>{hospital.rating} ★ ({hospital.reviews}) · {hospital.type}</Text>
-                            <Text style={tw`text-gray-500`}>📍 {hospital.location}</Text>
-                            <View style={tw`flex-row`}>
-                                <Text style={tw`text-gray-500`}>🕒 {hospital.hours}</Text>
-                                {hospital.contact && <Text style={tw`text-gray-500`}>📞 {hospital.contact}</Text>}
+                        <View style={tw`flex gap-[2px]`}>
+                            <Text style={tw`font-bold w-52`}>{hospital.name}</Text>
+                            <View style={tw`flex-row gap-2`}>
+                                <View style={tw`w-10 rounded flex-row items-center justify-center bg-blue-100 p-[1px]`}>
+                                    <Text style={tw`text-blue-800`}>{hospital.rating}</Text>
+                                    <Ionicons name='star' color='blue' />
+                                </View>
+                                <View>
+                                    <Text style={tw`text-gray-500`}>({hospital.reviews}) . {hospital.type}</Text>
+                                </View>
+                            </View>
+                            <Text style={tw`text-gray-500`}>
+                                <Ionicons name='location' style={tw`mr-2`} />
+                                {hospital.location}
+                            </Text>
+                            <View style={tw`flex-row gap-3`}>
+                                <Text style={tw`text-gray-500`}>{hospital.hours}</Text>
+                                {hospital.contact && <Text style={tw`text-gray-500`}>{hospital.contact}</Text>}
                             </View>
                         </View>
                     </TouchableOpacity>
                 ))}
+                <Modal visible={modalVisible} animationType="slide" presentationStyle='fullScreen' >
+                    <View style={tw`flex-1 justify-center items-center bg-slate-100 p-4`}>
+                        <View style={tw`absolute top-4 flex-row items-center gap-12`}>
+                            <TouchableOpacity onPress={() => setModalVisible(false)}>
+                                <FontAwesome name="chevron-left" size={18} color='black' />
+                            </TouchableOpacity>
+                            <Text style={tw`text-lg font-bold mb-1 w-72 bg-red-100`}>{selectedHospital?.name}</Text>
+                        </View>
+                        <View>
+                            <View style={tw`w-4/5 flex-row items-center border border-gray-300 rounded-full p-2`}>
+                                <Feather name="search" size={24} color="gray" style={tw`mr-2`} />
+                                <TextInput
+                                    style={tw`flex-1 h-6 px-4`}
+                                    placeholder="Find a doctor"
+                                    onChangeText={text => setSearchQuery(text)}
+                                    value={searchQuery}
+                                />
+                            </View>
+                            <View style={tw`flex-row items-center justify-center justify-between my-3`}>
+                                <Text style={tw`text-lg font-bold`}>Category</Text>
+                                <TouchableOpacity style={tw`bg-blue-600 py-1 px-3 rounded-full`}>
+                                    <Text>Transfer</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         </ScrollView>
     )

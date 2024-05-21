@@ -4,8 +4,8 @@ import tw from 'twrnc'
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import article1 from '@/assets/images/article1.png';
 import { router } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import axios from 'axios';
+import Articles from '../../components/articles';
 const { height } = Dimensions.get('window');
 
 const landingPage = () => {
@@ -94,7 +94,7 @@ const landingPage = () => {
         }));
     };
     return (
-        <View>
+        <ScrollView>
             <View style={tw`flex-row pt-12 bg-[#D5ECF4]`}>
                 <View style={tw`w-1/2 px-5 gap-3 py-2`}>
                     <View>
@@ -151,55 +151,12 @@ const landingPage = () => {
                     </View>
                 </View>
                 <View style={tw`px-6`}>
-                    <View style={tw`flex-row justify-between my-2`}>
-                        <Text style={tw`font-bold text-xl`}>Health article</Text>
-                        <TouchableOpacity>
-                            <Text style={tw`text-blue-600 items-center justify-center`}>See all</Text>
-                        </TouchableOpacity>
+                    <View style={tw`px-10`}>
+                        <Articles />
                     </View>
-                    <SafeAreaView>
-                        <ScrollView style={tw`h-28`} showsVerticalScrollIndicator={false}>
-                            {articles.map((article) => (
-                                <View
-                                    key={article.id}
-                                    style={tw`h-18 my-1 flex-row p-1 gap-3 border border-gray-400 rounded-md`}
-                                >
-                                    <View>
-                                        <Image
-                                            source={require('@/assets/images/article1.png')}
-                                            style={tw`h-[95%] w-19`}
-                                        />
-                                    </View>
-                                    <View style={tw`gap-1 w-full`}>
-                                        <View style={tw`flex-row w-[70%] justify-between p-1`}>
-                                            <View style={tw`w-4/5`}>
-                                                <Text style={[tw`font-bold`, { fontSize: 10 }]}>{article.title}</Text>
-                                            </View>
-                                            <View style={tw``}>
-                                                <TouchableOpacity
-                                                    onPress={() => handleBookmarks(article.id)}
-                                                >
-                                                    <FontAwesome
-                                                        name={bookmarkStatus[article.id] ? 'bookmark' : 'bookmark-o'} // Use bookmarkStatus state for each article
-                                                        size={16}
-                                                        color='blue'
-                                                    />
-                                                </TouchableOpacity>
-
-                                            </View>
-                                        </View>
-                                        <View style={tw`flex-row gap-4`}>
-                                            <Text style={[tw`text-gray-500`, { fontSize: 10 }]}>{article.postedDate}</Text>
-                                            <Text style={[tw`text-gray-500`, { fontSize: 10 }]}>{article.timeRead}min read</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            ))}
-                        </ScrollView>
-                    </SafeAreaView>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
