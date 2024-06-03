@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Modal, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import tw from 'twrnc'
 import { router } from 'expo-router'
@@ -43,7 +43,7 @@ const ProfilePage = () => {
     };
 
     return (
-        <View>
+        <ScrollView>
             <View style={tw`w-full items-center pt-14`}>
                 <Image source={require('@/assets/images/profile.png')} />
                 <Text style={tw`font-bold my-3`}>Ruchita Harris</Text>
@@ -102,7 +102,7 @@ const ProfilePage = () => {
                 </View>
             </Modal>
 
-        </View>
+        </ScrollView>
     )
 }
 

@@ -4,7 +4,8 @@ import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from 'react-native-maps';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import CustomMarker from '@/components/customMarker';
-import { useNavigation, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
@@ -19,12 +20,17 @@ interface Pharmacy {
     rating: number;
 }
 
+type RootStackParamList = {
+    '(pharmacy)/[id]': { selectedPharmacy: Pharmacy };
+};
+
+
 const SearchPharmacy = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [userLocation, setUserLocation] = useState<any>(null);
     const [selectedPharmacy, setSelectedPharmacy] = useState<Pharmacy[]>([]);
     const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const router = useRouter();
     const [coords, setCoords] = useState([]);
 
@@ -64,7 +70,6 @@ const SearchPharmacy = () => {
                         longitude: pharmacy.long
                     },
                     rating: pharmacy.rating,
-                    // Add other attributes if needed
                 }));
 
                 setPharmacies(mappedData);
@@ -105,14 +110,38 @@ const SearchPharmacy = () => {
             "rating": '5.0'
         },
     ]
+    // const handlePress = (pharmacyId: string, pharmacyName: string) => {
+    //     const pharmacy = pharmacies.find((pharmacy) => pharmacy.id === pharmacyId);
+    //     if (pharmacy) {
+    //         const url = `/patient/home/(pharmacy)/${pharmacy.id}?name=${encodeURIComponent(pharmacyName)}&selectedPharmacy=${encodeURIComponent(JSON.stringify(pharmacy))}`;
+    //         router.navigate(url);
+    //         // setSelectedPharmacy(pharmacy);
+    //     }
+    // }
+    // const handlePress = (pharmacyId: string, pharmacyName: string) => {
+    //     const pharmacy = pharmacies.find((pharmacy) => pharmacy.id === pharmacyId);
+    //     if (pharmacy) {
+    //         console.log("Selected Pharmacy is:", pharmacy);
+    //         navigation.navigate('(pharmacy)/[id]', {
+    //             id: pharmacy.id,
+    //             name: pharmacyName,
+    //             selectedPharmacy: JSON.stringify(pharmacy),
+    //         });
+    //     }
+    // };
     const handlePress = (pharmacyId: string, pharmacyName: string) => {
         const pharmacy = pharmacies.find((pharmacy) => pharmacy.id === pharmacyId);
         if (pharmacy) {
-            const url = `/patient/home/(pharmacy)/${pharmacy.id}?name=${encodeURIComponent(pharmacyName)}&selectedPharmacy=${JSON.stringify(pharmacy)}`;
-            router.navigate(url);
-            // setSelectedPharmacy(pharmacy);
+            console.log("Selected Pharmacy is:", pharmacy);
+            navigation.navigate('(pharmacy)/[id]', {
+                id: pharmacy.id,
+                name: pharmacyName,
+                selectedPharmacy: pharmacy,
+            });
         }
-    }
+    };
+
+
 
     return (
         <View style={{ flex: 1 }}>

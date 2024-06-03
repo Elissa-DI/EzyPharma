@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Modal, Text, TouchableOpacity } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { Link, useRouter } from 'expo-router';
+import { Link, router, useLocalSearchParams, useRouter } from 'expo-router';
 import RBSheet from 'react-native-raw-bottom-sheet'
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
@@ -23,14 +23,10 @@ interface Pharmacy {
 }
 
 type RootStackParamList = {
-    // Define any route screens with their respective parameters
-    // For example:
     AddLocation: {
-      selectedPharmacy?: string; // Optional parameter
-      // Add other parameters if needed
+        selectedPharmacy?: Pharmacy;
     };
-    // Add other screens if needed
-  };
+};
 
 const addLocation = () => {
     const [userLocation, setUserLocation] = useState<any>(null);
@@ -42,23 +38,28 @@ const addLocation = () => {
 
 
     const refBottomSheet = useRef<any>();
-
-    const router = useRouter();
+    const refAllDoneSheet = useRef<any>();
 
     // const route = useRoute();
-    const route = useRoute<RouteProp<RootStackParamList, 'AddLocation'>>();
-    const selectedPharmacy = route.params?.selectedPharmacy ? JSON.parse(route.params.selectedPharmacy) : null;
-    console.log("selectedPharmacy:", selectedPharmacy);
+    // // const selectedPharmacyJson = route.params?.selectedPharmacy;
+    // const selectedPharmacyJson = (route.params as RootStackParamList['AddLocation'])?.selectedPharmacy;
+    // const selectedPharmacy: Pharmacy | null = selectedPharmacyJson ? selectedPharmacyJson : null;
+
+    // console.log("Selected Pharmacy:", selectedPharmacy);
+
+    const route = useRoute();
+    const selectedPharmacy: Pharmacy | null = route.params?.selectedPharmacy;
+
+    console.log("Selected Pharmacy:", selectedPharmacy);
+
 
     useEffect(() => {
         getUserLocation();
     }, []);
 
-    //This is for a modal delay timeout
     useEffect(() => {
         const timer = setTimeout(() => {
-            // setOpen(true);
-            refBottomSheet.current.open(); // Open the bottom sheet after 1.5 seconds
+            refBottomSheet.current.open();
         }, 1500);
         return () => clearTimeout(timer);
     }, []);
@@ -74,8 +75,6 @@ const addLocation = () => {
         const { latitude, longitude } = currentLocation.coords;
         getAddressFromCoordinates(latitude, longitude);
         setUserLocation(currentLocation.coords);
-        //Consoling your current location coordinates
-        // console.log(currentLocation.coords);
     };
 
     // const getUserLocation = async () => {
@@ -98,7 +97,7 @@ const addLocation = () => {
         try {
             const location = await Location.reverseGeocodeAsync({ latitude, longitude });
             const { postalCode, city, region, street } = location[0];
-            const formattedAddress = `${street}, ${city}, ${region}`;
+            const formattedAddress = `${street}, ${region}`;
             setPostalAddress(formattedAddress);
         } catch (error) {
             console.error("Error fetching address:", error);
@@ -135,6 +134,11 @@ const addLocation = () => {
         }
     };
 
+    const handleConfirmLocation = () => {
+        refBottomSheet.current.close();
+        refAllDoneSheet.current.open();
+    };
+
     return (
         <View style={{ flex: 1 }}>
             {/* <View style={styles.container}> */}
@@ -156,6 +160,31 @@ const addLocation = () => {
                         }}
                         title="Your Location"
                     />
+                    {/* {selectedPharmacy && (
+                        <>
+                            <Marker
+                                coordinate={{
+                                    latitude: selectedPharmacy.address.latitude,
+                                    longitude: selectedPharmacy.address.longitude,
+                                }}
+                                title={selectedPharmacy.name}
+                            />
+                            <Polyline
+                                coordinates={[
+                                    {
+                                        latitude: userLocation.latitude,
+                                        longitude: userLocation.longitude,
+                                    },
+                                    {
+                                        latitude: selectedPharmacy.address.latitude,
+                                        longitude: selectedPharmacy.address.longitude
+                                    }
+                                ]}
+                                strokeColor="#FF0000"
+                                strokeWidth={2}
+                            />
+                        </>
+                    )} */}
                 </MapView>
             )}
             <TouchableOpacity style={tw`absolute top-8 left-4 flex-row items-center gap-28 p-1 bg-white rounded-md`}>
@@ -199,9 +228,65 @@ const addLocation = () => {
                         </Text>
                     </View>
                 </View>
-                <TouchableOpacity style={tw`w-full my-3 py-2 justify-center items-center bg-blue-600 rounded-full`}>
+                <TouchableOpacity style={tw`w-full my-3 py-2 justify-center items-center bg-blue-600 rounded-full`} onPress={handleConfirmLocation}>
                     <Text style={tw`font-bold text-white`}>Confirm Location</Text>
                 </TouchableOpacity>
+            </RBSheet>
+            <RBSheet
+                ref={refAllDoneSheet}
+                customStyles={{
+                    // wrapper: {
+                    //     padding: 30
+                    // },
+                    container: {
+                        paddingVertical: 15,
+                        paddingHorizontal: 25,
+                        alignItems: 'center',
+                        borderTopLeftRadius: 15,
+                        borderTopRightRadius: 15,
+                        gap: 3,
+                        height: 280,
+                    }
+                }}
+            >
+                <View style={tw`w-full`}>
+                    <Text style={tw`font-bold text-xl`}>Order tracking</Text>
+                    <View style={tw`flex-row justify-between items-center`}>
+                        <View>
+                            <Text style={tw`text-xl`}>Cameron Williamson</Text>
+                            <Text style={tw`text-gray-400`}>Delivery Man</Text>
+                        </View>
+                        <View>
+                            <Ionicons name='call' size={25} color='blue' />
+                        </View>
+                    </View>
+                    <View style={tw`w-full border-t border-gray-400 my-2`} />
+                    <View style={tw`my-2 flex-row gap-2`}>
+                        <View style={tw`bg-blue-100 rounded-full p-1`}>
+                            <Ionicons name='location' size={18} color='blue' />
+                        </View>
+                        <View>
+                            <Text style={tw`text-gray-400`}>Delivery Address</Text>
+                            <Text style={tw`font-bold`}>2972 Westheimer Rd. Santa Ana, Illinois 85486 </Text>
+                        </View>
+                    </View>
+                    <View style={tw`my-2 flex-row gap-2`}>
+                        <View style={tw`bg-blue-100 rounded-full p-1`}>
+                            <Ionicons name='timer' size={18} color='blue' />
+                        </View>
+                        <View>
+                            <Text style={tw`text-gray-400`}>Delivery Time</Text>
+                            <Text style={tw`font-bold`}>03:00PM (Max 20 min)</Text>
+                        </View>
+                    </View>
+                    <TouchableOpacity style={tw`w-4/5 my-3 py-2 justify-center items-center bg-blue-600 rounded-full`}
+                        onPress={() => {
+                            router.navigate('/patient/home/cart/addLocation');
+                        }}
+                    >
+                        <Text style={tw`font-bold text-white`}>{route.params.pharmacy}</Text>
+                    </TouchableOpacity>
+                </View>
             </RBSheet>
         </View>
     );

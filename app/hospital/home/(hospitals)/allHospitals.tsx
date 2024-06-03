@@ -68,33 +68,54 @@ const hospitals = [
 
 const categories = [
     {
-        icon: 'yes',
+        icon: 'stethoscope',
         name: 'General'
     },
     {
-        icon: 'yes',
+        icon: 'home',
         name: 'General'
     },
     {
-        icon: 'yes',
+        icon: 'home',
         name: 'General'
     },
     {
-        icon: 'yes',
+        icon: 'home',
         name: 'General'
     },
     {
-        icon: 'yes',
+        icon: 'home',
         name: 'General'
     },
     {
-        icon: 'yes',
+        icon: 'home',
         name: 'General'
     }, {
-        icon: 'yes',
+        icon: 'home',
         name: 'General'
     },
 ]
+
+const doctors = [
+    {
+        name: 'Dr. Rishi',
+
+        image: require('@/assets/images/doctor.png'),
+    },
+    {
+        name: 'Dr. Roger',
+        image: require('@/assets/images/doctor.png'),
+    },
+    {
+        name: 'Dr. Nallarasi',
+
+        image: require('@/assets/images/doctor.png'),
+    },
+    {
+        name: 'Dr. Nihal',
+        image: require('@/assets/images/doctor.png'),
+    },
+];
 
 const AllHospitals = () => {
     const [selectedHospital, setSelectedHospital] = useState<Hospital>();
@@ -155,10 +176,10 @@ const AllHospitals = () => {
                             <TouchableOpacity onPress={() => setModalVisible(false)}>
                                 <FontAwesome name="chevron-left" size={18} color='black' />
                             </TouchableOpacity>
-                            <Text style={tw`text-lg font-bold mb-1 w-72 bg-red-100`}>{selectedHospital?.name}</Text>
+                            <Text style={tw`text-lg font-bold mb-1 w-64 text-center`}>{selectedHospital?.name}</Text>
                         </View>
                         <View>
-                            <View style={tw`w-4/5 flex-row items-center border border-gray-300 rounded-full p-2`}>
+                            <View style={tw`w-full flex-row items-center border border-gray-300 rounded-full p-2 mt-14`}>
                                 <Feather name="search" size={24} color="gray" style={tw`mr-2`} />
                                 <TextInput
                                     style={tw`flex-1 h-6 px-4`}
@@ -170,8 +191,61 @@ const AllHospitals = () => {
                             <View style={tw`flex-row items-center justify-center justify-between my-3`}>
                                 <Text style={tw`text-lg font-bold`}>Category</Text>
                                 <TouchableOpacity style={tw`bg-blue-600 py-1 px-3 rounded-full`}>
-                                    <Text>Transfer</Text>
+                                    <Text style={tw`text-white font-semibold`}>Transfer</Text>
                                 </TouchableOpacity>
+                            </View>
+                            <View style={tw`flex flex-wrap flex-row justify-between`}>
+                                {categories.map((category, i) => (
+                                    <TouchableOpacity key={i} style={tw`w-1/4 p-2 flex  items-center`}>
+                                        <FontAwesome name={category.icon} size={35} color="blue" />
+                                        <Text style={tw`text-gray-400`}>{category.name}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                            <View style={tw`my-2`}>
+                                <Text style={tw`text-lg font-bold mb-1`}>Recommended doctors</Text>
+                                <View style={tw`relative`}>
+                                    <View style={tw`absolute top-[100px] bg-gray-200 border border-gray-300 h-10 w-[90%] left-5 rounded-2xl`} />
+                                    <View style={tw`absolute w-full bg-white flex flex-row border border-gray-300 rounded-2xl p-2 gap-4`}>
+                                        <View style={tw`rounded-full w-28 h-28`}>
+                                            <Image
+                                                source={require('@/assets/images/doctor.png')}
+                                                style={tw`rounded-full w-full h-full`}
+                                                alt='doctor'
+                                            />
+                                        </View>
+                                        <View style={tw`flex gap-1`}>
+                                            <Text style={tw`text-lg font-bold`}>Dr. Marcus Horizon</Text>
+                                            <Text style={tw`text-gray-400`}>Cardiologist</Text>
+                                            <View style={tw`border border-[0.7px] bg-gray-400 border-gray-400 mt-2 mb-3`} />
+                                            <View style={tw`flex-row gap-1`}>
+                                                <View style={tw`w-10 rounded flex-row items-center justify-center bg-blue-100 p-[1px]`}>
+                                                    <Text style={tw`text-blue-800`}>4.7</Text>
+                                                    <Ionicons name='star' color='blue' />
+                                                </View>
+                                                <Text style={tw``}>
+                                                    <Ionicons name='location' style={tw`mr-2`} />
+                                                    King Faisal hospital
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={tw`my-3 mt-36`}>
+                                <Text style={tw`text-lg font-bold mb-1`}>Our recent doctors</Text>
+                                <View style={tw`flex flex-wrap flex-row justify-between`}>
+                                    {doctors.map((doctor, i) => (
+                                        <View key={i} style={tw`w-1/4`}>
+                                            <Image
+                                                source={doctor.image}
+                                                style={tw`rounded-full w-18 h-18`}
+                                                alt='doctor'
+                                            />
+                                            <Text style={tw`font-semibold`}>{doctor.name}</Text>
+                                        </View>
+                                    ))}
+                                </View>
                             </View>
                         </View>
                     </View>

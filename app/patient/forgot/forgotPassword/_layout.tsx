@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native'
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { router, Link } from 'expo-router';
 import { useToast } from "react-native-toast-notifications";
@@ -35,7 +35,7 @@ const ForgotPassword = () => {
     setIsSubmitting(false);
   };
   return (
-    <View>
+    <ScrollView>
       <View style={tw`mt-12 py-1 px-8`}>
         <Link href='../'>
           <FontAwesome name="chevron-left" size={18} />
@@ -131,7 +131,10 @@ const ForgotPassword = () => {
       <View style={tw`w-full flex items-center mt-10`}>
         <TouchableOpacity
           style={[tw`h-14 w-4/5 flex items-center justify-center bg-blue-600 rounded-full`, isSubmitting && tw`bg-gray-400`]}
-          onPress={handleForgotSubmit}
+          // onPress={handleForgotSubmit}
+          onPress={() => {
+            router.navigate("/patient/forgot/reset");
+          }}
           disabled={isSubmitting}
         >
           <Text style={tw`font-bold text-white`}>
@@ -141,7 +144,7 @@ const ForgotPassword = () => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
