@@ -111,7 +111,7 @@ const MyCart = () => {
                             </View>
                         </View>
                     </View>
-                    <View style={tw`border border-gray-500 rounded-xl flex-row gap-3 p-3 my-4`}>
+                    {/* <View style={tw`border border-gray-500 rounded-xl flex-row gap-3 p-3 my-4`}>
                         <View style={tw`items-center justify-center`}>
                             <Image
                                 source={require('@/assets/images/pop.png')}
@@ -141,7 +141,7 @@ const MyCart = () => {
                                 <Text style={tw`font-bold text-xl`}>{medicine.price}</Text>
                             </View>
                         </View>
-                    </View>
+                    </View> */}
                     <View>
                         <Text style={tw`font-bold text-xl my-3`}>Payment Details</Text>
                         <View style={tw``}>

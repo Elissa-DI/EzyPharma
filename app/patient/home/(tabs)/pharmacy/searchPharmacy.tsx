@@ -140,6 +140,17 @@ const SearchPharmacy = () => {
             });
         }
     };
+    // const handlePress = (pharmacy: Pharmacy, pharmacyId: string, pharmacyName: string) => {
+    //     console.log("Selected Pharmacy is:", pharmacy);
+    //     router.push({
+    //         pathname: "/patient/home/(pharmacy)/[id]",
+    //         params: {
+    //             id: pharmacy.id,
+    //             name: pharmacyName,
+    //             selectedPharmacy: JSON.stringify(pharmacy)
+    //         },
+    //     });
+    // };
 
 
 

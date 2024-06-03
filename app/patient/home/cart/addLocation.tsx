@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Modal, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Modal, Text, TouchableOpacity, Linking } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { Link, router, useLocalSearchParams, useRouter } from 'expo-router';
@@ -10,6 +10,9 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
+import CustomMarker from '@/components/customMarker';
+// import PolylineDirection from '@react-native-maps/polyline-direction';
+import MapViewDirections from 'react-native-maps-directions';
 
 
 interface Pharmacy {
@@ -35,6 +38,7 @@ const addLocation = () => {
 
     // const [selectedPharmacy, setSelectedPharmacy] = useState<Pharmacy[]>([]);
     const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
+    const [isLocationConfirmed, setLocationConfirmed] = useState<boolean>(false);
 
 
     const refBottomSheet = useRef<any>();
@@ -137,7 +141,24 @@ const addLocation = () => {
     const handleConfirmLocation = () => {
         refBottomSheet.current.close();
         refAllDoneSheet.current.open();
+        setLocationConfirmed(true);
     };
+
+    const pharmacy =
+    {
+        "id": 1,
+        "name": "Access pharmacy ltd",
+        "address": {
+            "latitude": -1.5976637,
+            "longitude": 30.0535555
+        },
+        "rating": '4.3'
+    }
+
+    const handleCall = () => {
+        Linking.openURL('tel:0734155917'); // Replace with the desired phone number
+    };
+
 
     return (
         <View style={{ flex: 1 }}>
@@ -160,6 +181,59 @@ const addLocation = () => {
                         }}
                         title="Your Location"
                     />
+                    <Marker
+                        coordinate={{
+                            latitude: pharmacy.address.latitude,
+                            longitude: pharmacy.address.longitude,
+                        }}
+                        title={pharmacy.name}
+
+                    >
+                        <CustomMarker rating={pharmacy.rating} />
+                    </Marker>
+                    {isLocationConfirmed && (
+                        <Polyline
+                            coordinates={[
+                                {
+                                    latitude: userLocation.latitude,
+                                    longitude: userLocation.longitude,
+                                },
+                                {
+                                    latitude: pharmacy.address.latitude,
+                                    longitude: pharmacy.address.longitude,
+                                }
+                            ]}
+                            strokeColor="#FF0000"
+                            strokeWidth={2}
+                        />
+                    )}
+                    {/* <PolylineDirection
+                        origin={
+                            latitude: userLocation.latitude,
+                                longitude: userLocation.longitude,
+                        }
+                        destination={
+                             latitude: pharmacy.address.latitude,
+                                longitude: pharmacy.address.longitude,
+                        }
+                        apiKey={AIzaSyCeWa9GnzWXG9l6_DCTo4qq2SS9sYDV-Z8}
+                        strokeWidth={4}
+                        strokeColor="#12bc00"
+                    /> */}
+                    {/* <MapViewDirections
+                        origin={{
+                            latitude: userLocation.latitude,
+                            longitude: userLocation.longitude,
+                        }}
+                        destination={{
+                            latitude: pharmacy.address.latitude,
+                            longitude: pharmacy.address.longitude,
+                        }}
+                        apikey="A1zaSyAfNiYnPM5UFgy26FsCOUSRrvzNTrNV5w"
+                        strokeWidth={3}
+                        strokeColor="#FF0000"
+                    /> */}
+
                     {/* {selectedPharmacy && (
                         <>
                             <Marker
@@ -256,9 +330,9 @@ const addLocation = () => {
                             <Text style={tw`text-xl`}>Cameron Williamson</Text>
                             <Text style={tw`text-gray-400`}>Delivery Man</Text>
                         </View>
-                        <View>
+                        <TouchableOpacity onPress={handleCall}>
                             <Ionicons name='call' size={25} color='blue' />
-                        </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={tw`w-full border-t border-gray-400 my-2`} />
                     <View style={tw`my-2 flex-row gap-2`}>
@@ -267,7 +341,7 @@ const addLocation = () => {
                         </View>
                         <View>
                             <Text style={tw`text-gray-400`}>Delivery Address</Text>
-                            <Text style={tw`font-bold`}>2972 Westheimer Rd. Santa Ana, Illinois 85486 </Text>
+                            <Text style={tw`font-bold`}>{postalAddress}</Text>
                         </View>
                     </View>
                     <View style={tw`my-2 flex-row gap-2`}>
@@ -276,15 +350,15 @@ const addLocation = () => {
                         </View>
                         <View>
                             <Text style={tw`text-gray-400`}>Delivery Time</Text>
-                            <Text style={tw`font-bold`}>03:00PM (Max 20 min)</Text>
+                            <Text style={tw`font-bold`}>05:30PM (Max 2:30 hrs)</Text>
                         </View>
                     </View>
-                    <TouchableOpacity style={tw`w-4/5 my-3 py-2 justify-center items-center bg-blue-600 rounded-full`}
+                    <TouchableOpacity style={tw`w-full my-3 py-3 justify-center items-center bg-blue-600 rounded-full`}
                         onPress={() => {
-                            router.navigate('/patient/home/cart/addLocation');
+                            router.navigate('../');
                         }}
                     >
-                        <Text style={tw`font-bold text-white`}>{route.params.pharmacy}</Text>
+                        <Text style={tw`font-bold text-white`}>Back to cart</Text>
                     </TouchableOpacity>
                 </View>
             </RBSheet>
